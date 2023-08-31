@@ -20,7 +20,7 @@ async def get_schedule(name):
 
     # chrome_options.proxy = prox
 
-    driver = webdriver.Chrome(service=s, options=chrome_options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(), service=s, options=chrome_options)
     driver.set_window_size(2048, 1080)
 
     loop = asyncio.get_event_loop()

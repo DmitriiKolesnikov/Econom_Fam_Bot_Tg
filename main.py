@@ -232,7 +232,7 @@ async def take_user_name(message: types.Message) -> user_name:
             i += 1
 
     elif user_name[0] == "Эта":
-        photo = open('/Users/jimsgood/PycharmProjects/Econom_Fam_Bot_Tg/1.png', 'rb')
+        photo = open('1.png', 'rb')
         await get_schedule(full_name)
         await bot.send_message(chat_id=message.from_user.id,
                                text=f'Вот ваше расписание на эту неделю, {full_name}')
@@ -240,7 +240,7 @@ async def take_user_name(message: types.Message) -> user_name:
                              photo=photo)
 
     elif user_name[0] == "эта":
-        photo = open('/Users/jimsgood/PycharmProjects/Econom_Fam_Bot_Tg/1.png', 'rb')
+        photo = open('1.png', 'rb')
         await get_schedule(full_name)
         await bot.send_message(chat_id=message.from_user.id,
                                text=f'Вот ваше расписание на эту неделю, {full_name}')
@@ -248,7 +248,7 @@ async def take_user_name(message: types.Message) -> user_name:
                              photo=photo)
 
     elif user_name[0] == "Следующая":
-        photo = open('/Users/jimsgood/PycharmProjects/Econom_Fam_Bot_Tg/2.png', 'rb')
+        photo = open('2.png', 'rb')
         await get_schedule(full_name)
         await bot.send_message(chat_id=message.from_user.id,
                                text=f'Вот ваше расписание на следующую неделю, {full_name}')
@@ -256,7 +256,7 @@ async def take_user_name(message: types.Message) -> user_name:
                              photo=photo)
 
     elif user_name[0] == "следующая":
-        photo = open('/Users/jimsgood/PycharmProjects/Econom_Fam_Bot_Tg/2.png', 'rb')
+        photo = open('2.png', 'rb')
         await get_schedule(full_name)
         await bot.send_message(chat_id=message.from_user.id,
                                text=f'Вот ваше расписание на следующую неделю, {full_name}')

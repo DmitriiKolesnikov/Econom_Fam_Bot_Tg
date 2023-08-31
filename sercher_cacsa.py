@@ -11,7 +11,7 @@ TIMEOUT = 0.5
 
 
 async def get_schedule(name):
-    s = Service(ChromeDriverManager().install())
+    chrome_options.binary_location = '/usr/bin/google-chrome'
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--headless')
@@ -20,7 +20,7 @@ async def get_schedule(name):
 
     # chrome_options.proxy = prox
 
-    driver = webdriver.Chrome(ChromeDriverManager().install(), service=s, options=chrome_options)
+    driver = webdriver.Chrome(service=s, options=chrome_options)
     driver.set_window_size(2048, 1080)
 
     loop = asyncio.get_event_loop()

@@ -292,7 +292,7 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
         await callback.message.edit_text(text=f'{telegram_user_name}, чтобы узнать почту интересующего вас '
                                               f'преподавателя, достаточно указать его имя как в паспорте с'
                                               f'припиской «почта».\n\n'
-                                              f'Например, <b>«Почта Владимир Владимирович Иванов»</b>',
+                                              f'Например, <b>«Почта Иванов Владимир Владимирович»</b>',
                                          parse_mode='HTML')
 
     elif callback.data == 'first_pair':

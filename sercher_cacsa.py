@@ -37,7 +37,7 @@ async def get_schedule(name):
                                                f'//a[contains(@class, "Searchbar_searchbar__option__VOoIz")and contains(., "{name}")]')
                 break
             except NoSuchElementException as e:
-                print(e)
+                print('NoSuchElementException')
                 await asyncio.sleep(TIMEOUT)
 
         elements.click()
@@ -63,7 +63,7 @@ async def make_screenshot(driver, loop, path):
             element = driver.find_element(By.CSS_SELECTOR, "main div.wrapper.Timetable_timetable___l88y")
             break
         except NoSuchElementException as e:
-            print(e)
+            print('NoSuchElementException')
             await asyncio.sleep(TIMEOUT)
 
     page_width = await loop.run_in_executor(None, driver.execute_script, "return document.body.scrollWidth")

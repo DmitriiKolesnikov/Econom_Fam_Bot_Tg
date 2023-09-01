@@ -1,4 +1,4 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 
 kb_main = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=False)
 Raspisanie = KeyboardButton('📆Расписание')

@@ -11,3 +11,11 @@ Svobodnii_kabi = KeyboardButton('🔎Свободные кабинеты')
 
 kb_main.add(Raspisanie).insert(Svobodnii_kabi).add(Prepodi).insert(Meropriatia)
 kb_main.add(Kafedri).insert(Staga).add(Psiholog)
+
+pic_btn = [
+    InlineKeyboardButton(text='Эта', callback_data='this'),
+    InlineKeyboardButton(text='🔣', callback_data='next'),
+
+]
+
+pic_keyboard = InlineKeyboardMarkup().row(*pic_btn)

@@ -31,7 +31,7 @@ async def get_schedule(name):
 
         input_element.send_keys(name)
 
-        while True:
+        for _ in range(10):
             try:
                 elements = driver.find_element(By.XPATH,
                                                f'//a[contains(@class, "Searchbar_searchbar__option__VOoIz")and contains(., "{name}")]')
@@ -58,7 +58,7 @@ async def get_schedule(name):
 
 
 async def make_screenshot(driver, loop, path):
-    while True:
+    for _ in range(10):
         try:
             element = driver.find_element(By.CSS_SELECTOR, "main div.wrapper.Timetable_timetable___l88y")
             break

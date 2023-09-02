@@ -1,5 +1,5 @@
 from aiogram import Bot, executor, Dispatcher, types
-from Main_kb import kb_main
+from Main_kb import kb_main, pic_keyboard
 from Kafedri_data import inline_kb_kafedri
 from Take_user_name_inline_kb import take_user_name_kb
 from Prepodi_inline_kb import prepodi_kb
@@ -281,7 +281,7 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                       f"раза</b>."
                                       f" Я отправлю тебе сообщение <b>в течение 5 секунд!</b>\n\n",
                                  parse_mode="HTML",
-                                        reply_markup=)
+                                        reply_markup=pic_keyboard)
 
     elif callback.data == 'where_is_he':
         await callback.message.edit_text(text=f'{telegram_user_name}, чтобы узнать, где находится интересующий вас '

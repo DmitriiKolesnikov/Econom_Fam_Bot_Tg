@@ -18,4 +18,4 @@ pic_btn = [
 
 ]
 
-pic_keyboard = InlineKeyboardMarkup().row(*pic_btn)
+pic_keyboard = InlineKeyboardMarkup(resize_keyboard=True, one_time_ketboard=False).row(*pic_btn)

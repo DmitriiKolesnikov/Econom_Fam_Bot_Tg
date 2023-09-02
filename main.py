@@ -280,7 +280,8 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                       f"Уважанмый пользователь, на кнопку надо нажимать <b>не более одного "
                                       f"раза</b>."
                                       f" Я отправлю тебе сообщение <b>в течение 5 секунд!</b>\n\n",
-                                 parse_mode="HTML")
+                                 parse_mode="HTML",
+                                        reply_markup=)
 
     elif callback.data == 'where_is_he':
         await callback.message.edit_text(text=f'{telegram_user_name}, чтобы узнать, где находится интересующий вас '

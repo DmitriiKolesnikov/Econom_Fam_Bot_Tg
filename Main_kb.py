@@ -14,7 +14,7 @@ kb_main.add(Kafedri).insert(Staga).add(Psiholog)
 
 pic_btn = [
     InlineKeyboardButton(text='Эта', callback_data='this'),
-    InlineKeyboardButton(text='🔣', callback_data='next'),
+    InlineKeyboardButton(text='Следующая', callback_data='next'),
 
 ]
 

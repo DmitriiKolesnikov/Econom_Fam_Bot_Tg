@@ -336,11 +336,11 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                               f'<b>восьмой паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
-    # elif callback.data == 'this':
-    #     photo = open('1.png', 'rb')
-    #     await get_schedule(full_name)
-    #     await callback.messsage.edit_text(text=f'Вот ваше расписание на эту неделю')
-    #     await callback.message.answer_photo(photo=photo)
+    elif callback.data == 'this':
+        photo = open('1.png', 'rb')
+        await get_schedule(full_name)
+        await callback.messsage.edit_text(text=f'Вот ваше расписание на эту неделю')
+        await callback.message.answer_photo(photo=photo)
 
     elif callback.data == 'official':
         await callback.message.answer(text=f'{telegram_user_name}, вот список мероприятий от <b>МГУ</b>: ',

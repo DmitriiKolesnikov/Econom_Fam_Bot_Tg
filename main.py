@@ -423,6 +423,8 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                            f'Паблик =》https://vk.com/celonocov')
 
     elif callback.data == 'this':
+        await callback.message.edit_reply_markup(reply_markup=None)
+
         photo = open('1.png', 'rb')
         await get_schedule(full_name)
         await bot.send_message(chat_id=callback.message.chat.id,
@@ -431,6 +433,8 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                              photo=photo)
 
     elif callback.data == 'next':
+        await callback.message.edit_reply_markup(reply_markup=None)
+
         photo = open('2.png', 'rb')
         await get_schedule(full_name)
         await bot.send_message(chat_id=callback.message.chat.id,

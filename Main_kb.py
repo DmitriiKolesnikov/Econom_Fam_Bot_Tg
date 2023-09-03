@@ -13,9 +13,9 @@ kb_main.add(Raspisanie).insert(Svobodnii_kabi).add(Prepodi).insert(Meropriatia)
 kb_main.add(Kafedri).insert(Staga).add(Psiholog)
 
 pic_btn = [
-    KeyboardButton(text='Эта'),
-    KeyboardButton(text='Следующая'),
+    InlineKeyboardButton(text='Эта'),
+    InlineKeyboardButton(text='Следующая'),
 
 ]
 
-pic_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(*pic_btn)
+pic_keyboard = InlineKeyboardButton(resize_keyboard=True, one_time_keyboard=True).row(*pic_btn)

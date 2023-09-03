@@ -239,23 +239,7 @@ async def take_user_name(message: types.Message) -> user_name:
         await bot.send_photo(chat_id=message.from_user.id,
                              photo=photo)
 
-    elif user_name[0] == "эта":
-        photo = open('1.png', 'rb')
-        await get_schedule(full_name)
-        await bot.send_message(chat_id=message.from_user.id,
-                               text=f'Вот ваше расписание на эту неделю, {full_name}')
-        await bot.send_photo(chat_id=message.from_user.id,
-                             photo=photo)
-
     elif user_name[0] == "Следующая":
-        photo = open('2.png', 'rb')
-        await get_schedule(full_name)
-        await bot.send_message(chat_id=message.from_user.id,
-                               text=f'Вот ваше расписание на следующую неделю, {full_name}')
-        await bot.send_photo(chat_id=message.from_user.id,
-                             photo=photo)
-
-    elif user_name[0] == "следующая":
         photo = open('2.png', 'rb')
         await get_schedule(full_name)
         await bot.send_message(chat_id=message.from_user.id,
@@ -282,10 +266,6 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                       f" Я отправлю тебе сообщение <b>в течение 5 секунд!</b>\n\n",
                                  parse_mode="HTML",
                                         reply_markup=pic_keyboard)
-        photo = open('1.png', 'rb')
-        await get_schedule(full_name)
-        await callback.messsage.edit_text(text=f'Вот ваше расписание на эту неделю')
-        await callback.message.answer_photo(photo=photo)
 
     elif callback.data == 'where_is_he':
         await callback.message.edit_text(text=f'{telegram_user_name}, чтобы узнать, где находится интересующий вас '
@@ -340,11 +320,6 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                               f'<b>восьмой паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
-    elif callback.data == 'this':
-        photo = open('1.png', 'rb')
-        await get_schedule(full_name)
-        await callback.messsage.edit_text(text=f'Вот ваше расписание на эту неделю')
-        await callback.message.answer_photo(photo=photo)
 
     elif callback.data == 'official':
         await callback.message.answer(text=f'{telegram_user_name}, вот список мероприятий от <b>МГУ</b>: ',

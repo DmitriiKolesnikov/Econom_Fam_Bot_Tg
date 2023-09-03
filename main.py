@@ -422,6 +422,27 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                            f'человеку (об этом вы должны будете сообщить нам в лс)\n'
                                            f'Паблик =》https://vk.com/celonocov')
 
+    elif callback.data == 'this':
+        await callback.message.edit_reply_markup(reply_markup=None)
+
+        photo = open('1.png', 'rb')
+        await get_schedule(full_name)
+        await bot.send_message(chat_id=callback.message.chat.id,
+                               text=f'Вот ваше расписание на эту неделю, {full_name}')
+        await bot.send_photo(chat_id=callback.message.chat.id,
+                             photo=photo)
+
+    elif callback.data == 'next':
+        await callback.message.edit_reply_markup(reply_markup=None)
+
+        photo = open('2.png', 'rb')
+        await get_schedule(full_name)
+        await bot.send_message(chat_id=callback.message.chat.id,
+                               text=f'Вот ваше расписание на следующую неделю, {full_name}')
+        await bot.send_photo(chat_id=callback.message.chat.id,
+                             photo=photo)
+
+
 if __name__ == '__main__':
     executor.start_polling(dp,
                            on_startup=on_startup,

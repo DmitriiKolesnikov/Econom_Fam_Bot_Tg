@@ -11,8 +11,8 @@ TIMEOUT = 0.5
 
 
 async def get_schedule(name):
-    s = Service(ChromeDriverManager().install())
     chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = '/usr/bin/google-chrome'
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--disable-gpu')
@@ -20,7 +20,7 @@ async def get_schedule(name):
 
     # chrome_options.proxy = prox
 
-    driver = webdriver.Chrome(service=s, options=chrome_options)
+    driver = webdriver.Chrome(options=chrome_options)
     driver.set_window_size(2048, 1080)
 
     loop = asyncio.get_event_loop()
@@ -31,13 +31,13 @@ async def get_schedule(name):
 
         input_element.send_keys(name)
 
-        while True:
+        for _ in range(10):
             try:
                 elements = driver.find_element(By.XPATH,
                                                f'//a[contains(@class, "Searchbar_searchbar__option__VOoIz")and contains(., "{name}")]')
                 break
             except NoSuchElementException as e:
-                print(e)
+                print('NoSuchElementException')
                 await asyncio.sleep(TIMEOUT)
 
         elements.click()
@@ -58,12 +58,12 @@ async def get_schedule(name):
 
 
 async def make_screenshot(driver, loop, path):
-    while True:
+    for _ in range(10):
         try:
             element = driver.find_element(By.CSS_SELECTOR, "main div.wrapper.Timetable_timetable___l88y")
             break
         except NoSuchElementException as e:
-            print(e)
+            print('NoSuchElementException')
             await asyncio.sleep(TIMEOUT)
 
     page_width = await loop.run_in_executor(None, driver.execute_script, "return document.body.scrollWidth")

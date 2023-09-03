@@ -1,5 +1,5 @@
 from aiogram import Bot, executor, Dispatcher, types
-from Main_kb import kb_main
+from Main_kb import kb_main, pic_keyboard
 from Kafedri_data import inline_kb_kafedri
 from Take_user_name_inline_kb import take_user_name_kb
 from Prepodi_inline_kb import prepodi_kb
@@ -232,15 +232,7 @@ async def take_user_name(message: types.Message) -> user_name:
             i += 1
 
     elif user_name[0] == "Эта":
-        photo = open('/Users/jimsgood/PycharmProjects/Econom_Fam_Bot_Tg/1.png', 'rb')
-        await get_schedule(full_name)
-        await bot.send_message(chat_id=message.from_user.id,
-                               text=f'Вот ваше расписание на эту неделю, {full_name}')
-        await bot.send_photo(chat_id=message.from_user.id,
-                             photo=photo)
-
-    elif user_name[0] == "эта":
-        photo = open('/Users/jimsgood/PycharmProjects/Econom_Fam_Bot_Tg/1.png', 'rb')
+        photo = open('1.png', 'rb')
         await get_schedule(full_name)
         await bot.send_message(chat_id=message.from_user.id,
                                text=f'Вот ваше расписание на эту неделю, {full_name}')
@@ -248,15 +240,7 @@ async def take_user_name(message: types.Message) -> user_name:
                              photo=photo)
 
     elif user_name[0] == "Следующая":
-        photo = open('/Users/jimsgood/PycharmProjects/Econom_Fam_Bot_Tg/2.png', 'rb')
-        await get_schedule(full_name)
-        await bot.send_message(chat_id=message.from_user.id,
-                               text=f'Вот ваше расписание на следующую неделю, {full_name}')
-        await bot.send_photo(chat_id=message.from_user.id,
-                             photo=photo)
-
-    elif user_name[0] == "следующая":
-        photo = open('/Users/jimsgood/PycharmProjects/Econom_Fam_Bot_Tg/2.png', 'rb')
+        photo = open('2.png', 'rb')
         await get_schedule(full_name)
         await bot.send_message(chat_id=message.from_user.id,
                                text=f'Вот ваше расписание на следующую неделю, {full_name}')
@@ -274,13 +258,14 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                               '👉👈')
     elif callback.data == 'correct_name':
         await callback.message.edit_text(text=f"Если вы хотите узнать расписание на эту неделю, то достаточно написать:\n"
-                                              f" <b>'Эта'</b>.\n\n"
-                                              f"Если вы хотите узнать расписание на следующую неделю, то достаточно "
-                                              f"написать:\n<b>'Следующая'</b>.\n\n"
-                                              f"Уважанмый пользователь, на кнопку надо нажимать <b>не более одного "
-                                              f"раза<>/b."
-                                              f" Я отправлю тебе сообщение <b>в течение 5 секунд!</b>\n\n",
-                                         parse_mode="HTML")
+                                      f" <b>'Эта'</b>.\n\n"
+                                      f"Если вы хотите узнать расписание на следующую неделю, то достаточно "
+                                      f"написать:\n<b>'Следующая'</b>.\n\n"
+                                      f"Уважанмый пользователь, на кнопку надо нажимать <b>не более одного "
+                                      f"раза</b>."
+                                      f" Я отправлю тебе сообщение <b>в течение 5 секунд!</b>\n\n",
+                                 parse_mode="HTML",
+                                        reply_markup=pic_keyboard)
 
     elif callback.data == 'where_is_he':
         await callback.message.edit_text(text=f'{telegram_user_name}, чтобы узнать, где находится интересующий вас '
@@ -292,7 +277,7 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
         await callback.message.edit_text(text=f'{telegram_user_name}, чтобы узнать почту интересующего вас '
                                               f'преподавателя, достаточно указать его имя как в паспорте с'
                                               f'припиской «почта».\n\n'
-                                              f'Например, <b>«Почта Владимир Владимирович Иванов»</b>',
+                                              f'Например, <b>«Почта Иванов Владимир Владимирович»</b>',
                                          parse_mode='HTML')
 
     elif callback.data == 'first_pair':
@@ -335,6 +320,7 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                               f'<b>восьмой паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
+
     elif callback.data == 'official':
         await callback.message.answer(text=f'{telegram_user_name}, вот список мероприятий от <b>МГУ</b>: ',
                                       parse_mode='HTML')

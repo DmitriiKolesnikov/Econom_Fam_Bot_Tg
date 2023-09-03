@@ -282,6 +282,10 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                       f" Я отправлю тебе сообщение <b>в течение 5 секунд!</b>\n\n",
                                  parse_mode="HTML",
                                         reply_markup=pic_keyboard)
+        photo = open('1.png', 'rb')
+        await get_schedule(full_name)
+        await callback.messsage.edit_text(text=f'Вот ваше расписание на эту неделю')
+        await callback.message.answer_photo(photo=photo)
 
     elif callback.data == 'where_is_he':
         await callback.message.edit_text(text=f'{telegram_user_name}, чтобы узнать, где находится интересующий вас '

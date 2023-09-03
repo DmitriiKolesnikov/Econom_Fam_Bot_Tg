@@ -13,8 +13,8 @@ kb_main.add(Raspisanie).insert(Svobodnii_kabi).add(Prepodi).insert(Meropriatia)
 kb_main.add(Kafedri).insert(Staga).add(Psiholog)
 
 pic_btn = [
-    KeyboardButton(text='Эта', callback_data='this'),
-    KeyboardButton(text='Следующая', callback_data='next'),
+    KeyboardButton(text='Эта'),
+    KeyboardButton(text='Следующая'),
 
 ]
 

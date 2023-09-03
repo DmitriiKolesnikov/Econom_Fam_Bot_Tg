@@ -18,4 +18,4 @@ pic_btn = [
 
 ]
 
-pic_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_ketboard=True).row(*pic_btn)
+pic_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).row(*pic_btn)

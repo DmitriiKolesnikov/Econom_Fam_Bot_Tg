@@ -18,4 +18,4 @@ pic_btn = [
 
 ]
 
-pic_keyboard = InlineKeyboardButton(resize_keyboard=True, one_time_keyboard=True).row(*pic_btn)
+pic_keyboard = InlineKeyboardButton(row_width=2).row(*pic_btn)

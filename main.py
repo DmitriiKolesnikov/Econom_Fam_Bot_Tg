@@ -7,7 +7,7 @@ from Free_room_kb import free_room_kb
 from Meropriatia_kb import meropriatia_kb
 from Json_data import sched_w_st, data_all_teachers_and_mails
 from sercher_cacsa import get_schedule
-from datetime import date, datetime
+from datetime import date
 
 
 TOKEN_API = '6431263054:AAG5luZr2VIGwYPIiBJ4QHxEAwSKH-iil70'
@@ -258,14 +258,14 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                               '👉👈')
     elif callback.data == 'correct_name':
         await callback.message.edit_text(text=f"Если вы хотите узнать расписание на эту неделю, то достаточно написать:\n"
-                                      f" <b>'Эта'</b>.\n\n"
-                                      f"Если вы хотите узнать расписание на следующую неделю, то достаточно "
-                                      f"написать:\n<b>'Следующая'</b>.\n\n"
-                                      f"Уважанмый пользователь, на кнопку надо нажимать <b>не более одного "
-                                      f"раза</b>."
-                                      f" Я отправлю тебе сообщение <b>в течение 5 секунд!</b>\n\n",
-                                 parse_mode="HTML",
-                                        reply_markup=pic_keyboard)
+                                              f" <b>'Эта'</b>.\n\n"
+                                              f"Если вы хотите узнать расписание на следующую неделю, то достаточно "
+                                              f"написать:\n<b>'Следующая'</b>.\n\n"
+                                              f"Уважанмый пользователь, на кнопку надо нажимать <b>не более одного "
+                                              f"раза</b>."
+                                              f" Я отправлю тебе сообщение <b>в течение 5 секунд!</b>\n\n",
+                                         parse_mode="HTML",
+                                         reply_markup=pic_keyboard)
 
     elif callback.data == 'where_is_he':
         await callback.message.edit_text(text=f'{telegram_user_name}, чтобы узнать, где находится интересующий вас '
@@ -281,41 +281,50 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                          parse_mode='HTML')
 
     elif callback.data == 'first_pair':
+        time = '09:00-10:30'
+        current_time = str(date.today())
         await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
                                               f'<b>первой паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
     elif callback.data == 'second_pair':
+        time = '10:40-12:10'
         await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
                                               f'<b>второй паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
     elif callback.data == 'third_pair':
+        time = '12:20-13:50'
         await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
                                               f'<b>третьей паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
     elif callback.data == 'forth_pair':
+        time = '14:00-15:30'
         await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
                                               f'<b>четвертой паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
     elif callback.data == 'fifth_pair':
+        time = '15:40-17:10'
         await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
                                               f'<b>пятой паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
     elif callback.data == 'six_pair':
+        time = '17:20-18:50'
         await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
                                               f'<b>шестой паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
     elif callback.data == 'seventh_pair':
+        time = '18:55-20:25'
         await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
                                               f'<b>седьмой паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
     elif callback.data == 'eight_pair':
+        time = '20:30-22:00'
         await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
                                               f'<b>восьмой паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',

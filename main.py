@@ -8,6 +8,8 @@ from Meropriatia_kb import meropriatia_kb
 from Json_data import sched_w_st, data_all_teachers_and_mails
 from sercher_cacsa import get_schedule
 from datetime import date
+from kabs_data_and_logic import list_of_kabs_first_flour, list_of_kabs_second_flour, \
+    list_of_kabs_third_flour, list_of_kabs_fourth_flour, list_of_kabs_fith_flour
 
 
 TOKEN_API = '6431263054:AAG5luZr2VIGwYPIiBJ4QHxEAwSKH-iil70'
@@ -279,17 +281,36 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                          parse_mode='HTML')
 
     elif callback.data == 'first_pair':
-        time = '09:00-10:30'
-        current_time = str(date.today())
+        current_time = '09:00-10:30'
+        current_date = str(date.today())
+
         await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
                                               f'<b>первой паре</b>:\n'
                                               f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
                                          parse_mode='HTML')
     elif callback.data == 'second_pair':
-        time = '10:40-12:10'
-        await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
-                                              f'<b>второй паре</b>:\n'
-                                              f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
+        current_time = '10:40-12:10'
+        current_date = str(date.today())
+        for i in range(len(sched_w_st)):
+            if sched_w_st[i]['date'] == current_date and sched_w_st[i]['time'] == current_time:
+                if sched_w_st[i]['place'].startswith('1'):
+                    list_of_kabs_first_flour.remove(int(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('2'):
+                    list_of_kabs_second_flour.remove(int(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('3'):
+                    list_of_kabs_third_flour.remove(int(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('4'):
+                    list_of_kabs_fourth_flour.remove(int(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('5'):
+                    list_of_kabs_fith_flour.remove(int(sched_w_st[i]['place']))
+
+        await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>второй "
+                                              f"паре</b>:"
+                                              f"<b>Первый этаж</b>: {', '.join(list_of_kabs_first_flour)}\n"
+                                              f"<b>Второй этаж</b>: {', '.join(list_of_kabs_second_flour)}\n"
+                                              f"<b>Третий этаж</b>: {', '.join(list_of_kabs_third_flour)}\n"
+                                              f"<b>Четвертый этаж</b>: {', '.join(list_of_kabs_fourth_flour)}\n"
+                                              f"<b>Пятый этаж</b>: {', '.join(list_of_kabs_fith_flour)}\n",
                                          parse_mode='HTML')
     elif callback.data == 'third_pair':
         time = '12:20-13:50'

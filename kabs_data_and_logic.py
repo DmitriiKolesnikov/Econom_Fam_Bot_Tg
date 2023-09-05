@@ -5,7 +5,7 @@ list_of_kabs_first_flour = ['Центральная столовая', 'Боко
 
 list_of_kabs_second_flour = []
 for i in range(201, 268):
-    list_of_kabs_second_flour.append(i)
+    list_of_kabs_second_flour.append(str(i))
 
 list_of_kabs_second_flour.append('Сачок')
 
@@ -14,11 +14,11 @@ list_of_kabs_third_flour = ['Сачок']
 list_of_kabs_fourth_flour = []
 
 for i in range(201, 268):
-    list_of_kabs_fourth_flour.append(i)
+    list_of_kabs_fourth_flour.append(str(i))
 
 
 for i in range(1, 13):
-    list_of_kabs_fourth_flour.append(f'Диванчик {i}')
+    list_of_kabs_fourth_flour.append(f'Диванчик {str(i)}')
 
 list_of_kabs_fourth_flour.append('Сачок')
 
@@ -26,8 +26,8 @@ list_of_kabs_fith_flour = []
 
 list_of_kabs_fith_flour.append('Сачок')
 list_of_kabs_fith_flour.append('Столовка')
-for i in range(2, 571):
-    list_of_kabs_fith_flour.append(i)
+for i in range(502, 571):
+    list_of_kabs_fith_flour.append(str(i))
 
 print(list_of_kabs_second_flour)
 

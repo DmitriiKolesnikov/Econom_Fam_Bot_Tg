@@ -317,16 +317,16 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
             await bot.send_message(chat_id=callback.from_user.id,
                                    text=f"{i}")
         await bot.send_message(chat_id=callback.from_user.id,
-                               text=f"<b>Второй этаж</b>: \n{' '.join(str(map(str, list_of_kabs_second_flour)))}\n",
+                               text=f"<b>Второй этаж</b>: \n{', '.join(str(map(str, list_of_kabs_second_flour)))}\n",
                                parse_mode="HTML")
         await bot.send_message(chat_id=callback.from_user.id,
-                               text=f"<b>Третий этаж</b>: \n{' '.join(map(str, list_of_kabs_third_flour))}\n",
+                               text=f"<b>Третий этаж</b>: \n{', '.join(map(str, list_of_kabs_third_flour))}\n",
                                parse_mode="HTML")
         await bot.send_message(chat_id=callback.from_user.id,
-                               text=f"<b>Четвертый этаж</b>: \n{' '.join(map(str, list_of_kabs_fourth_flour))}\n",
+                               text=f"<b>Четвертый этаж</b>: \n{', '.join(map(str, list_of_kabs_fourth_flour))}\n",
                                parse_mode='HTML')
         await bot.send_message(chat_id=callback.from_user.id,
-                               text=f"<b>Пятый этаж</b>: \n{' '.join(map(str, list_of_kabs_fith_flour))}\n",
+                               text=f"<b>Пятый этаж</b>: \n{', '.join(map(str, list_of_kabs_fith_flour))}\n",
                                parse_mode="HTML")
 
     elif callback.data == 'third_pair':

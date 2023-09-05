@@ -313,6 +313,9 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                               f"паре</b>:\n\n"
                                               f"<b>Первый этаж</b>: \n{' '.join(map(str, list_of_kabs_first_flour))}\n",
                                          parse_mode='HTML')
+        for i in list_of_kabs_first_flour:
+            await bot.send_message(chat_id=callback.from_user.id,
+                                   text=f"{i}, ")
         await bot.send_message(chat_id=callback.from_user.id,
                                text=f"<b>Второй этаж</b>: \n{' '.join(str(map(str, list_of_kabs_second_flour)))}\n",
                                parse_mode="HTML")

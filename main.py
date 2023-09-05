@@ -310,8 +310,8 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                     list_of_kabs_fith_flour.remove(int(sched_w_st[i]['place']))
 
         await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>второй "
-                                              f"паре</b>:"
-                                              f"<b>Первый этаж</b>: {', '.join(list_of_kabs_first_flour)}\n",
+                                              f"паре</b>:\n\n"
+                                              f"<b>Первый этаж</b>: {*list_of_kabs_first_flour}\n",
                                          parse_mode='HTML')
         await bot.send_message(chat_id=callback.from_user.id,
                                text=f"<b>Второй этаж</b>: {', '.join(str(list_of_kabs_second_flour))}\n",

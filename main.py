@@ -312,10 +312,10 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
         await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>второй "
                                               f"паре</b>:"
                                               f"<b>Первый этаж</b>: {', '.join(list_of_kabs_first_flour)}\n"
-                                              f"<b>Второй этаж</b>: {', '.join(list_of_kabs_second_flour)}\n"
-                                              f"<b>Третий этаж</b>: {', '.join(list_of_kabs_third_flour)}\n"
-                                              f"<b>Четвертый этаж</b>: {', '.join(list_of_kabs_fourth_flour)}\n"
-                                              f"<b>Пятый этаж</b>: {', '.join(list_of_kabs_fith_flour)}\n",
+                                              f"<b>Второй этаж</b>: {', '.join(str(list_of_kabs_second_flour))}\n"
+                                              f"<b>Третий этаж</b>: {', '.join(str(list_of_kabs_third_flour))}\n"
+                                              f"<b>Четвертый этаж</b>: {', '.join(str(list_of_kabs_fourth_flour))}\n"
+                                              f"<b>Пятый этаж</b>: {', '.join(str(list_of_kabs_fith_flour))}\n",
                                          parse_mode='HTML')
     elif callback.data == 'third_pair':
         time = '12:20-13:50'

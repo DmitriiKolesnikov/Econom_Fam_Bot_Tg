@@ -317,14 +317,14 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                text=f"Второй этаж: \n{' '.join(str(map(str, list_of_kabs_second_flour)))}\n",
                                )
         await bot.send_message(chat_id=callback.from_user.id,
-                               text=f"<b>Третий этаж</b>: \n{' '.join(map(str, list_of_kabs_third_flour))}\n",
-                               parse_mode="HTML")
+                               text=f"Третий этаж: \n{' '.join(map(str, list_of_kabs_third_flour))}\n",
+                               )
         await bot.send_message(chat_id=callback.from_user.id,
-                               text=f"<b>Четвертый этаж</b>: \n{' '.join(map(str, list_of_kabs_fourth_flour))}\n",
-                               parse_mode='HTML')
+                               text=f"Четвертый этаж: \n{' '.join(map(str, list_of_kabs_fourth_flour))}\n",
+                               )
         await bot.send_message(chat_id=callback.from_user.id,
-                               text=f"<b>Пятый этаж</b>: \n{' '.join(map(str, list_of_kabs_fith_flour))}\n",
-                               parse_mode="HTML")
+                               text=f"Пятый этаж: \n{' '.join(map(str, list_of_kabs_fith_flour))}\n",
+                              )
 
     elif callback.data == 'third_pair':
         time = '12:20-13:50'

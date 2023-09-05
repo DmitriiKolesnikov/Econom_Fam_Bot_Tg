@@ -38,28 +38,28 @@ def foo():
         if sched_w_st[i]['date'] == right_now and sched_w_st[i]['time'] == current_time:
             for i in range(len(sched_w_st)):
                 if sched_w_st[i]['date'] == right_now and sched_w_st[i]['time'] == current_time:
-                    if sched_w_st[i]['place'].startswith('1') and int(sched_w_st[i]['place']) in \
+                    if sched_w_st[i]['place'].startswith('1') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_first_flour:
-                        list_of_kabs_first_flour.remove(int(sched_w_st[i]['place']))
+                        list_of_kabs_first_flour.remove(str(sched_w_st[i]['place']))
                         print(list_of_kabs_first_flour)
-                    elif sched_w_st[i]['place'].startswith('2') and int(sched_w_st[i]['place']) in \
+                    elif sched_w_st[i]['place'].startswith('2') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_second_flour:
-                        list_of_kabs_second_flour.remove(int(sched_w_st[i]['place']))
+                        list_of_kabs_second_flour.remove(str(sched_w_st[i]['place']))
                         print(list_of_kabs_second_flour)
-                    elif sched_w_st[i]['place'].startswith('3') and int(sched_w_st[i]['place']) in \
+                    elif sched_w_st[i]['place'].startswith('3') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_third_flour:
-                        list_of_kabs_third_flour.remove(int(sched_w_st[i]['place']))
+                        list_of_kabs_third_flour.remove(str(sched_w_st[i]['place']))
                         print(list_of_kabs_third_flour)
-                    elif sched_w_st[i]['place'].startswith('4') and int(sched_w_st[i]['place']) in \
+                    elif sched_w_st[i]['place'].startswith('4') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_fourth_flour:
-                        list_of_kabs_fourth_flour.remove(int(sched_w_st[i]['place']))
+                        list_of_kabs_fourth_flour.remove(str(sched_w_st[i]['place']))
                         print(list_of_kabs_fourth_flour)
-                    elif sched_w_st[i]['place'].startswith('5') and int(sched_w_st[i]['place']) in \
+                    elif sched_w_st[i]['place'].startswith('5') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_fith_flour:
                         print(list_of_kabs_fith_flour)
 
 
-# foo()
+foo()
 
 def foo2():
     time = '18:55-20:25'

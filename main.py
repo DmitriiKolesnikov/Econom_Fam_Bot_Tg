@@ -293,29 +293,26 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
         current_date = str(date.today())
         for i in range(len(sched_w_st)):
             if sched_w_st[i]['date'] == current_date and sched_w_st[i]['time'] == current_time:
-                if sched_w_st[i]['place'].startswith('1') and int(sched_w_st[i]['place']) in \
+                if sched_w_st[i]['place'].startswith('1') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_first_flour:
-                    list_of_kabs_first_flour.remove(int(sched_w_st[i]['place']))
-                elif sched_w_st[i]['place'].startswith('2') and int(sched_w_st[i]['place']) in \
+                    list_of_kabs_first_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('2') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_second_flour:
-                    list_of_kabs_second_flour.remove(int(sched_w_st[i]['place']))
-                elif sched_w_st[i]['place'].startswith('3') and int(sched_w_st[i]['place']) in \
+                    list_of_kabs_second_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('3') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_third_flour:
-                    list_of_kabs_third_flour.remove(int(sched_w_st[i]['place']))
-                elif sched_w_st[i]['place'].startswith('4') and int(sched_w_st[i]['place']) in \
+                    list_of_kabs_third_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('4') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_fourth_flour:
-                    list_of_kabs_fourth_flour.remove(int(sched_w_st[i]['place']))
-                elif sched_w_st[i]['place'].startswith('5') and int(sched_w_st[i]['place']) in \
+                    list_of_kabs_fourth_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('5') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_fith_flour:
-                    list_of_kabs_fith_flour.remove(int(sched_w_st[i]['place']))
+                    list_of_kabs_fith_flour.remove(str(sched_w_st[i]['place']))
 
         await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>второй "
                                               f"паре</b>:\n\n"
                                               f"<b>Первый этаж</b>: \n{', '.join(map(str, list_of_kabs_first_flour))}\n",
                                          parse_mode='HTML')
-        for i in list_of_kabs_first_flour:
-            await bot.send_message(chat_id=callback.from_user.id,
-                                   text=f"{i}")
         await bot.send_message(chat_id=callback.from_user.id,
                                text=f"<b>Второй этаж</b>: \n{', '.join(str(map(str, list_of_kabs_second_flour)))}\n",
                                parse_mode="HTML")

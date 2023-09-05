@@ -283,11 +283,41 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
     elif callback.data == 'first_pair':
         current_time = '09:00-10:30'
         current_date = str(date.today())
+        for i in range(len(sched_w_st)):
+            if sched_w_st[i]['date'] == current_date and sched_w_st[i]['time'] == current_time:
+                if sched_w_st[i]['place'].startswith('1') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_first_flour:
+                    list_of_kabs_first_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('2') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_second_flour:
+                    list_of_kabs_second_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('3') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_third_flour:
+                    list_of_kabs_third_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('4') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fourth_flour:
+                    list_of_kabs_fourth_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('5') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fith_flour:
+                    list_of_kabs_fith_flour.remove(str(sched_w_st[i]['place']))
 
-        await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
-                                              f'<b>первой паре</b>:\n'
-                                              f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
+        await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>первой "
+                                              f"паре</b>:\n\n"
+                                              f"<b>Первый этаж</b>: \n{', '.join(map(str, list_of_kabs_first_flour))}\n",
                                          parse_mode='HTML')
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Второй этаж: \n{', '.join(map(str, list_of_kabs_second_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Третий этаж: \n{', '.join(map(str, list_of_kabs_third_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Четвертый этаж: \n{', '.join(map(str, list_of_kabs_fourth_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Пятый этаж: \n{', '.join(map(str, list_of_kabs_fith_flour))}\n",
+                               )
+
     elif callback.data == 'second_pair':
         current_time = '10:40-12:10'
         current_date = str(date.today())
@@ -327,41 +357,232 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                               )
 
     elif callback.data == 'third_pair':
-        time = '12:20-13:50'
-        await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
-                                              f'<b>третьей паре</b>:\n'
-                                              f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
+        current_time = '12:20-13:50'
+        current_date = str(date.today())
+        for i in range(len(sched_w_st)):
+            if sched_w_st[i]['date'] == current_date and sched_w_st[i]['time'] == current_time:
+                if sched_w_st[i]['place'].startswith('1') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_first_flour:
+                    list_of_kabs_first_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('2') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_second_flour:
+                    list_of_kabs_second_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('3') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_third_flour:
+                    list_of_kabs_third_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('4') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fourth_flour:
+                    list_of_kabs_fourth_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('5') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fith_flour:
+                    list_of_kabs_fith_flour.remove(str(sched_w_st[i]['place']))
+
+        await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>третьей "
+                                              f"паре</b>:\n\n"
+                                              f"<b>Первый этаж</b>: \n{', '.join(map(str, list_of_kabs_first_flour))}\n",
                                          parse_mode='HTML')
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Второй этаж: \n{', '.join(map(str, list_of_kabs_second_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Третий этаж: \n{', '.join(map(str, list_of_kabs_third_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Четвертый этаж: \n{', '.join(map(str, list_of_kabs_fourth_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Пятый этаж: \n{', '.join(map(str, list_of_kabs_fith_flour))}\n",
+                               )
+
     elif callback.data == 'forth_pair':
-        time = '14:00-15:30'
-        await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
-                                              f'<b>четвертой паре</b>:\n'
-                                              f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
+        current_time = '14:00-15:30'
+        current_date = str(date.today())
+        for i in range(len(sched_w_st)):
+            if sched_w_st[i]['date'] == current_date and sched_w_st[i]['time'] == current_time:
+                if sched_w_st[i]['place'].startswith('1') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_first_flour:
+                    list_of_kabs_first_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('2') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_second_flour:
+                    list_of_kabs_second_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('3') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_third_flour:
+                    list_of_kabs_third_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('4') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fourth_flour:
+                    list_of_kabs_fourth_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('5') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fith_flour:
+                    list_of_kabs_fith_flour.remove(str(sched_w_st[i]['place']))
+
+        await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>четвертой "
+                                              f"паре</b>:\n\n"
+                                              f"<b>Первый этаж</b>: \n{', '.join(map(str, list_of_kabs_first_flour))}\n",
                                          parse_mode='HTML')
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Второй этаж: \n{', '.join(map(str, list_of_kabs_second_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Третий этаж: \n{', '.join(map(str, list_of_kabs_third_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Четвертый этаж: \n{', '.join(map(str, list_of_kabs_fourth_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Пятый этаж: \n{', '.join(map(str, list_of_kabs_fith_flour))}\n",
+                               )
+
     elif callback.data == 'fifth_pair':
-        time = '15:40-17:10'
-        await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
-                                              f'<b>пятой паре</b>:\n'
-                                              f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
+        current_time = '15:40-17:10'
+        current_date = str(date.today())
+        for i in range(len(sched_w_st)):
+            if sched_w_st[i]['date'] == current_date and sched_w_st[i]['time'] == current_time:
+                if sched_w_st[i]['place'].startswith('1') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_first_flour:
+                    list_of_kabs_first_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('2') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_second_flour:
+                    list_of_kabs_second_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('3') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_third_flour:
+                    list_of_kabs_third_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('4') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fourth_flour:
+                    list_of_kabs_fourth_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('5') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fith_flour:
+                    list_of_kabs_fith_flour.remove(str(sched_w_st[i]['place']))
+
+        await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>пятой "
+                                              f"паре</b>:\n\n"
+                                              f"<b>Первый этаж</b>: \n{', '.join(map(str, list_of_kabs_first_flour))}\n",
                                          parse_mode='HTML')
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Второй этаж: \n{', '.join(map(str, list_of_kabs_second_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Третий этаж: \n{', '.join(map(str, list_of_kabs_third_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Четвертый этаж: \n{', '.join(map(str, list_of_kabs_fourth_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Пятый этаж: \n{', '.join(map(str, list_of_kabs_fith_flour))}\n",
+                               )
+
     elif callback.data == 'six_pair':
-        time = '17:20-18:50'
-        await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
-                                              f'<b>шестой паре</b>:\n'
-                                              f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
+        current_time = '17:20-18:50'
+        current_date = str(date.today())
+        for i in range(len(sched_w_st)):
+            if sched_w_st[i]['date'] == current_date and sched_w_st[i]['time'] == current_time:
+                if sched_w_st[i]['place'].startswith('1') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_first_flour:
+                    list_of_kabs_first_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('2') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_second_flour:
+                    list_of_kabs_second_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('3') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_third_flour:
+                    list_of_kabs_third_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('4') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fourth_flour:
+                    list_of_kabs_fourth_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('5') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fith_flour:
+                    list_of_kabs_fith_flour.remove(str(sched_w_st[i]['place']))
+
+        await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>шестой "
+                                              f"паре</b>:\n\n"
+                                              f"<b>Первый этаж</b>: \n{', '.join(map(str, list_of_kabs_first_flour))}\n",
                                          parse_mode='HTML')
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Второй этаж: \n{', '.join(map(str, list_of_kabs_second_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Третий этаж: \n{', '.join(map(str, list_of_kabs_third_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Четвертый этаж: \n{', '.join(map(str, list_of_kabs_fourth_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Пятый этаж: \n{', '.join(map(str, list_of_kabs_fith_flour))}\n",
+                               )
+
     elif callback.data == 'seventh_pair':
-        time = '18:55-20:25'
-        await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
-                                              f'<b>седьмой паре</b>:\n'
-                                              f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
+        current_time = '18:55-20:25'
+        current_date = str(date.today())
+        for i in range(len(sched_w_st)):
+            if sched_w_st[i]['date'] == current_date and sched_w_st[i]['time'] == current_time:
+                if sched_w_st[i]['place'].startswith('1') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_first_flour:
+                    list_of_kabs_first_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('2') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_second_flour:
+                    list_of_kabs_second_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('3') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_third_flour:
+                    list_of_kabs_third_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('4') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fourth_flour:
+                    list_of_kabs_fourth_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('5') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fith_flour:
+                    list_of_kabs_fith_flour.remove(str(sched_w_st[i]['place']))
+
+        await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>седьмой "
+                                              f"паре</b>:\n\n"
+                                              f"<b>Первый этаж</b>: \n{', '.join(map(str, list_of_kabs_first_flour))}\n",
                                          parse_mode='HTML')
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Второй этаж: \n{', '.join(map(str, list_of_kabs_second_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Третий этаж: \n{', '.join(map(str, list_of_kabs_third_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Четвертый этаж: \n{', '.join(map(str, list_of_kabs_fourth_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Пятый этаж: \n{', '.join(map(str, list_of_kabs_fith_flour))}\n",
+                               )
+
     elif callback.data == 'eight_pair':
-        time = '20:30-22:00'
-        await callback.message.edit_text(text=f'{telegram_user_name}, вот список кабинетов, доступных на '
-                                              f'<b>восьмой паре</b>:\n'
-                                              f'СВОБОДНЫЕ КАБИНЕТЫ БУДУТ ДОСТУПНЫ В ВОСКРЕСЕНЬЕ В 20:00.',
+        current_time = '20:30-22:00'
+        current_date = str(date.today())
+        for i in range(len(sched_w_st)):
+            if sched_w_st[i]['date'] == current_date and sched_w_st[i]['time'] == current_time:
+                if sched_w_st[i]['place'].startswith('1') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_first_flour:
+                    list_of_kabs_first_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('2') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_second_flour:
+                    list_of_kabs_second_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('3') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_third_flour:
+                    list_of_kabs_third_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('4') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fourth_flour:
+                    list_of_kabs_fourth_flour.remove(str(sched_w_st[i]['place']))
+                elif sched_w_st[i]['place'].startswith('5') and str(sched_w_st[i]['place']) in \
+                        list_of_kabs_fith_flour:
+                    list_of_kabs_fith_flour.remove(str(sched_w_st[i]['place']))
+
+        await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>восьмой "
+                                              f"паре</b>:\n\n"
+                                              f"<b>Первый этаж</b>: \n{', '.join(map(str, list_of_kabs_first_flour))}\n",
                                          parse_mode='HTML')
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Второй этаж: \n{', '.join(map(str, list_of_kabs_second_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Третий этаж: \n{', '.join(map(str, list_of_kabs_third_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Четвертый этаж: \n{', '.join(map(str, list_of_kabs_fourth_flour))}\n",
+                               )
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f"Пятый этаж: \n{', '.join(map(str, list_of_kabs_fith_flour))}\n",
+                               )
 
     elif callback.data == 'official':
         await callback.message.answer(text=f'{telegram_user_name}, вот список мероприятий от <b>МГУ</b>: ',

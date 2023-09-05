@@ -59,7 +59,7 @@ def foo():
                         print(list_of_kabs_fith_flour)
 
 
-foo()
+# foo()
 
 def foo2():
     time = '18:55-20:25'

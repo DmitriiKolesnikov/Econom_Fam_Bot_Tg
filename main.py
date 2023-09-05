@@ -293,15 +293,20 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
         current_date = str(date.today())
         for i in range(len(sched_w_st)):
             if sched_w_st[i]['date'] == current_date and sched_w_st[i]['time'] == current_time:
-                if sched_w_st[i]['place'].startswith('1'):
+                if sched_w_st[i]['place'].startswith('1') and int(sched_w_st[i]['place']) in \
+                            list_of_kabs_first_flour:
                     list_of_kabs_first_flour.remove(int(sched_w_st[i]['place']))
-                elif sched_w_st[i]['place'].startswith('2'):
+                elif sched_w_st[i]['place'].startswith('2') and int(sched_w_st[i]['place']) in \
+                            list_of_kabs_second_flour:
                     list_of_kabs_second_flour.remove(int(sched_w_st[i]['place']))
-                elif sched_w_st[i]['place'].startswith('3'):
+                elif sched_w_st[i]['place'].startswith('3') and int(sched_w_st[i]['place']) in \
+                            list_of_kabs_third_flour:
                     list_of_kabs_third_flour.remove(int(sched_w_st[i]['place']))
-                elif sched_w_st[i]['place'].startswith('4'):
+                elif sched_w_st[i]['place'].startswith('4') and int(sched_w_st[i]['place']) in \
+                            list_of_kabs_fourth_flour:
                     list_of_kabs_fourth_flour.remove(int(sched_w_st[i]['place']))
-                elif sched_w_st[i]['place'].startswith('5'):
+                elif sched_w_st[i]['place'].startswith('5') and int(sched_w_st[i]['place']) in \
+                            list_of_kabs_fith_flour:
                     list_of_kabs_fith_flour.remove(int(sched_w_st[i]['place']))
 
         await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>второй "

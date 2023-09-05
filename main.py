@@ -309,12 +309,12 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                             list_of_kabs_fith_flour:
                     list_of_kabs_fith_flour.remove(str(sched_w_st[i]['place']))
 
-        await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на <b>второй "
-                                              f"паре</b>:\n\n"
+        await callback.message.edit_text(text=f"{telegram_user_name}, вот список кабинетов, доступных на второй "
+                                              f"паре:\n\n"
                                               f"Первый этаж: \n{', '.join(map(str, list_of_kabs_first_flour))}\n",
                                          )
         await bot.send_message(chat_id=callback.from_user.id,
-                               text=f"Второй этаж: \n{', '.join(str(map(str, list_of_kabs_second_flour)))}\n",
+                               text=f"Второй этаж: \n{', '.join(map(str, list_of_kabs_second_flour))}\n",
                                )
         await bot.send_message(chat_id=callback.from_user.id,
                                text=f"Третий этаж: \n{', '.join(map(str, list_of_kabs_third_flour))}\n",

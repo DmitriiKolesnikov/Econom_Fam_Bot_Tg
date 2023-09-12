@@ -11,7 +11,6 @@ from datetime import date
 from kabs_data_and_logic import list_of_kabs_first_flour, list_of_kabs_second_flour, \
     list_of_kabs_third_flour, list_of_kabs_fourth_flour, list_of_kabs_fith_flour
 
-
 TOKEN_API = '6431263054:AAG5luZr2VIGwYPIiBJ4QHxEAwSKH-iil70'
 
 

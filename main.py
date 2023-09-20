@@ -1,4 +1,4 @@
-import pandas as pd
+# import pandas as pd
 from aiogram import Bot, executor, Dispatcher, types
 from Main_kb import kb_main, pic_keyboard
 from Kafedri_data import inline_kb_kafedri

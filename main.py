@@ -1,3 +1,4 @@
+import pandas as pd
 from aiogram import Bot, executor, Dispatcher, types
 from Main_kb import kb_main, pic_keyboard
 from Kafedri_data import inline_kb_kafedri
@@ -6,8 +7,7 @@ from Prepodi_inline_kb import prepodi_kb
 from Free_room_kb import free_room_kb
 from Meropriatia_kb import meropriatia_kb
 from Json_data import sched_w_st, data_all_teachers_and_mails
-# import pandas as pd
-from datetime import datetime
+
 from sercher_cacsa import get_schedule
 from datetime import date
 from kabs_data_and_logic import list_of_kabs_first_flour, list_of_kabs_second_flour, \

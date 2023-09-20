@@ -592,7 +592,10 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
         #         await bot.send_message(chat_id=callback.from_user.id,
         #                                text=f"{row['Data']} ({row['Weekday']}) - {row['Activity']}",
         #                                )
-        await callback.message.edit_text(text='Пока ничего нет')
+        await callback.message.answer(text=f'{telegram_user_name}, вот список мероприятий, которые предлагают '
+                                           f'<b>МГУ</b>:',
+                                      parse_mode='HTML')
+        await callback.message.answer(text=f'Пока ничего нового нет')
 
     elif callback.data == 'unofficial':
         await callback.message.answer(text=f'{telegram_user_name}, вот список мероприятий, которые предлагают наши '

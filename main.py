@@ -6,7 +6,7 @@ from Prepodi_inline_kb import prepodi_kb
 from Free_room_kb import free_room_kb
 from Meropriatia_kb import meropriatia_kb
 from Json_data import sched_w_st, data_all_teachers_and_mails
-import pandas as pd
+# import pandas as pd
 from datetime import datetime
 from sercher_cacsa import get_schedule
 from datetime import date
@@ -586,13 +586,13 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                )
 
     elif callback.data == 'official':
-        df = pd.read_excel('Chill_timetable.xlsx', sheet_name='Лист1')
-        for i, row in df.iterrows():
-            if row['Activity'] != 'Nothing':
-                await bot.send_message(chat_id=callback.from_user.id,
-                                       text=f"{row['Data']} ({row['Weekday']}) - {row['Activity']}",
-                                       )
-            await callback.message.delete()
+        # df = pd.read_excel('Chill_timetable.xlsx', sheet_name='Лист1')
+        # for i, row in df.iterrows():
+        #     if row['Activity'] != 'Nothing':
+        #         await bot.send_message(chat_id=callback.from_user.id,
+        #                                text=f"{row['Data']} ({row['Weekday']}) - {row['Activity']}",
+        #                                )
+        await callback.message.edit_text(text='Пока ничего нет')
 
     elif callback.data == 'unofficial':
         await callback.message.answer(text=f'{telegram_user_name}, вот список мероприятий, которые предлагают наши '

@@ -586,16 +586,14 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                )
 
     elif callback.data == 'official':
-        # df = pd.read_excel('Chill_timetable.xlsx', sheet_name='Лист1')
-        # for i, row in df.iterrows():
-        #     if row['Activity'] != 'Nothing':
-        #         await bot.send_message(chat_id=callback.from_user.id,
-        #                                text=f"{row['Data']} ({row['Weekday']}) - {row['Activity']}",
-        #                                )
         await callback.message.answer(text=f'{telegram_user_name}, вот список мероприятий, которые предлагают '
                                            f'<b>МГУ</b>:',
                                       parse_mode='HTML')
-        await callback.message.answer(text=f'Пока ничего нового нет')
+        df = pd.read_excel('Chill_timetable.xlsx', sheet_name='Лист1')
+        for i, row in df.iterrows():
+            if row['Activity'] != 'Nothing':
+                await bot.send_message(chat_id=callback.from_user.id,
+                                       text=f"{row['Data']} ({row['Weekday']}) - {row['Activity']}")
 
     elif callback.data == 'unofficial':
         await callback.message.answer(text=f'{telegram_user_name}, вот список мероприятий, которые предлагают наши '

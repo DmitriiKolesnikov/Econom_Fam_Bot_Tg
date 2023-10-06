@@ -7,7 +7,9 @@ from Prepodi_inline_kb import prepodi_kb
 from Free_room_kb import free_room_kb
 from Meropriatia_kb import meropriatia_kb
 from Json_data import sched_w_st, data_all_teachers_and_mails
-
+from Google_sheet import *
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from datetime import datetime
 from sercher_cacsa import get_schedule
 from datetime import date
 from kabs_data_and_logic import list_of_kabs_first_flour, list_of_kabs_second_flour, \

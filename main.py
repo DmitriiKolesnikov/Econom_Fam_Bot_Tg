@@ -24,9 +24,23 @@ dp = Dispatcher(bot)
 
 user_name = ''
 
+buttons = ['Среда 11 октября 2023, 14:00', 'Среда 11 октября 2023, 15:00',
+           'Среда 11 октября 2023, 16:00', 'Среда 18 октября 2023, 14:00',
+           'Среда 18 октября 2023, 15:00', 'Среда 18 октября 2023, 16:00',
+           'Среда 25 октября 2023, 14:00', 'Среда 25 октября 2023, 15:00',
+           'Среда 25 октября 2023, 16:00']
+psychologist = ['Полина Чибисова', 'Записаться в лист ожидания']
+list_for_google_sheet = []
+
 
 async def on_startup(_):
     print('Bot started')
+
+
+
+async def delay_reminder(chat_id: int):
+    await bot.send_message(chat_id=chat_id,
+                           text=f'Уважаемый пользователь, напоминаю вам о записи к психологу')
 
 
 @dp.message_handler(commands=['start'])
@@ -117,17 +131,188 @@ async def meropriatia_command(message: types.Message) -> None:
                          reply_markup=meropriatia_kb)
 
 
+# метод для обработки команды гугл шит
 @dp.message_handler(text='⌛Психологическая помощь')
-async def psycho_help_command(message: types.Message) -> None:
+async def google_sheet_command(message: types.Message):
     await bot.send_photo(chat_id=message.from_user.id,
                          caption='👩🏼 '+'‍К специалисту можно записаться и прийти на консультацию, чтобы поработать '
                                  'с внутренними переживаниями или поделиться накопившимися мыслями и эмоциями.'
                                  ' ⌛ '+'Продолжительность сеанса — около 50 минут '
                                  'Если вам нужна помощь в разрешении какой-либо возникшей проблемы и вы бы хотели '
-                                 'получить психологическую поддержку, заполните, пожалуйста, гугл-форму'+' 👉🏻 '
-                                 + 'https://forms.gle/8HzRmW1yX8Wq5MVx7',
+                                 'получить психологическую поддержку, заполните, пожалуйста, анкету, которая будет'
+                                 'предложена ниже.',
                          photo='https://babr24.com/n2p/i/2021/1/21_1_5_2_05132453_b.jpg')
-    await message.delete()
+    await bot.send_message(chat_id=message.from_user.id,
+                           text=f"Прием осуществляется по средам с 14.00 до 17.00 (ауд 447)\n"
+                                f"На беседу с каждым человеком выделено 50 минут.\n\n"
+                                f"<b>ВАЖНО</b>: пока у нас только один психолог, Чибисова Полина. "
+                                f"Если Вы знакомы с ней лично, она не сможет к сожалению с Вами работать. "
+                                f"В этом случае <b>не надо</b> записываться на время, "
+                                f"<b>запишитесь в лист ожидания</b>.\n\n"
+                                f"У Вас есть возможность записаться на <b>2 бесплатные встречи</b>. "
+                                f"Записаться на прием  можно не позже, чем за 48 часов до встречи."
+                                f"Если Вам необходимо будет перенести или отменить встречу, "
+                                f"пожалуйста, <b>напишите об этом за 48 часов до начала сессии</b> "
+                                f"боту с помощью сообщения "
+                                f"<b>'Удали мою запись'</b>, иначе встреча будет считаться состоявшейся "
+                                f"(переносить/отменять встречи можно не более 1 раза). "
+                                f"При опоздании встреча не продлевается. <b>Не опаздывайте!</b>",
+                           parse_mode="HTML")
+    psychologist_keaboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    psychologist_keaboard.add(*psychologist)
+    await bot.send_message(chat_id=message.from_user.id,
+                           text=f'Выберите психолога, с которым вы хотите встретиться',
+                           parse_mode="HTML",
+                           reply_markup=psychologist_keaboard)
+
+
+@dp.message_handler(text="Полина Чибисова")
+async def main_psychologist(message: types.Message):
+    list_for_google_sheet.clear()
+    list_for_google_sheet.append(message.text)
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    keyboard.add(*buttons[:4])
+    await bot.send_message(chat_id=message.from_user.id,
+                           text=f"Выберите время, в которое вам удобно встретиться",
+                           parse_mode="HTML",
+                           reply_markup=keyboard)
+
+
+@dp.message_handler(text='Записаться в лист ожидания')
+async def extra_pscychologist(message: types.Message):
+    list_for_google_sheet.clear()
+    list_for_google_sheet.append(message.text)
+    await bot.send_message(chat_id=message.from_user.id,
+                           text=f"Для начала введите свое имя и номер группы в формате\n\n"
+                           f"<b>Колесников Дмитрий Михайлович Э305</b>\n\n"
+                           f"(каждое слово должно начинаться с заглавной буквы)",
+                           parse_mode="HTML")
+
+
+# Обработка нажатий на кнопки
+@dp.message_handler(lambda message: message.text in buttons)
+async def button_click(message: types.Message):
+    buttons.remove(message.text)
+    if len(buttons) >= 0:
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+        keyboard.add(*buttons[:4])
+        list_for_google_sheet.append(message.text)
+    await bot.send_message(chat_id=message.from_user.id,
+                           text=f"Для начала введите свое имя и номер группы в формате\n\n"
+                                f"<b>Колесников Дмитрий Михайлович Э305</b>\n\n"
+                                f"(каждое слово должно начинаться с заглавной буквы)",
+                           parse_mode="HTML")
+
+
+@dp.message_handler()
+async def fill_name_and_group(m: types.Message):
+    message = m.text.split()
+
+    if len(message) == 4 and m.text.istitle():
+        user_tg_id = str(m.from_user.id)
+        clients_name = str(message[0] + ' ' + message[1] + ' ' + message[2])
+        group_number = str(message[3])
+        list_for_google_sheet.append(user_tg_id)
+        list_for_google_sheet.append(clients_name)
+        list_for_google_sheet.append(group_number)
+        await bot.send_message(chat_id=m.from_user.id,
+                               text=f"Укажите свою почту\n",
+                               parse_mode="HTML")
+
+    elif '@' in message[0] and '.' in message[0][message[0].find('@'):]:
+        client_mail = str(message[0])
+        current_time = datetime.now()
+        list_for_google_sheet.append(str(current_time))
+        list_for_google_sheet.append(client_mail)
+        await bot.send_message(chat_id=m.from_user.id,
+                               text=f"А теперь расскажите о своей проблеме.\n\n"
+                                    f"<b>Эту информацию увидит только психолог </b>.\n\n"
+                                    f"Описание проблемы должно содержать от 6 до 50 слов.",
+                               parse_mode="HTML")
+
+    elif len(message) > 5:
+        description_of_the_problem = ""
+        for i in range(0, len(message)):
+            description_of_the_problem += str(message[i] + ' ')
+        list_for_google_sheet.append(description_of_the_problem)
+        if len(list_for_google_sheet) > 7:
+            psychology_type = list_for_google_sheet[0]
+            time_and_data_type = list_for_google_sheet[1]
+            list_for_google_sheet.remove(psychology_type)
+            list_for_google_sheet.remove(time_and_data_type)
+            list_for_google_sheet.append(time_and_data_type)
+            list_for_google_sheet.append(psychology_type)
+        else:
+            psychology_type = list_for_google_sheet[0]
+            del list_for_google_sheet[0]
+            list_for_google_sheet.append('None')
+            list_for_google_sheet.append(psychology_type)
+        worksheet.append_row(list_for_google_sheet)
+        await bot.send_message(chat_id=m.from_user.id,
+                               text=f'Вы успешно зарегистрировались на прием!\n'
+                                    f'Вот ваши данные:')
+        await bot.send_message(chat_id=m.from_user.id,
+                               text=f'ФИО: {list_for_google_sheet[1]}\n'
+                                    f'Номер группы: {list_for_google_sheet[2]}\n'
+                                    f'Электронная почта: {list_for_google_sheet[4]}\n'
+                                    f'Проблема: {list_for_google_sheet[5]}\n'
+                                    f'Дата и время приема: {list_for_google_sheet[6]}')
+
+        if list_for_google_sheet[7] == 'Полина Чибисова':
+            await bot.send_message(chat_id=739380400,
+                                   text=f'Уважаемая Полина, к вам записался новый человек.\n'
+                                        f'Вот его данные:')
+            await bot.send_message(chat_id=739380400,
+                                   text=f'ФИО: {list_for_google_sheet[1]}\n'
+                                        f'Номер группы: {list_for_google_sheet[2]}\n'
+                                        f'Электронная почта: {list_for_google_sheet[4]}\n'
+                                        f'Проблема: {list_for_google_sheet[5]}\n'
+                                        f'Дата и время приема: {list_for_google_sheet[6]}')
+
+        if list_for_google_sheet[6] == 'Среда 11 октября 2023, 14:00' or list_for_google_sheet[
+            6] == 'Среда 11 октября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 11 октября 2023, 16:00':
+            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
+                              end_date='2023-10-11', kwargs={'chat_id': m.from_user.id})
+            scheduler.start()
+
+        if list_for_google_sheet[6] == 'Среда 18 октября 2023, 14:00' or list_for_google_sheet[
+            6] == 'Среда 18 октября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 18 октября 2023, 16:00':
+            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
+                              end_date='2023-10-18', kwargs={'chat_id': m.from_user.id})
+            scheduler.start()
+
+        if list_for_google_sheet[6] == 'Среда 25 октября 2023, 14:00' or list_for_google_sheet[
+            6] == 'Среда 25 октября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 25 октября 2023, 16:00':
+            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
+                              end_date='2023-10-25', kwargs={'chat_id': m.from_user.id})
+            scheduler.start()
+
+    elif message[0] == 'Удали' or message[0] == 'удали':
+        cell_list = worksheet.findall(str(m.from_user.id))
+        if cell_list is None:
+            await bot.send_message(chat_id=m.from_user.id,
+                                   text=f'Уважаемый пользователь, вы ранее не записовались на прием к психологу,'
+                                        f'поэтому невозможно удалить вашу запись')
+        else:
+            for i in cell_list:
+                row_number = i.row
+                column_number = i.col
+                worksheet.update_cell(row_number, column_number + 8, f'Отмена записи произошла в {datetime.now()}')
+            await bot.send_message(chat_id=m.from_user.id,
+                                   text=f'Ваша запись успешно удалена.\n'
+                                        f'Психолог оповещен о данном происшествии')
+            await bot.send_message(chat_id=739380400,
+                                   text=f'Уважаемая Полина, данный человек <b>отказался</b> от встречи с вами.\n'
+                                        f'Вот его данные:')
+            await bot.send_message(chat_id=739380400,
+                                   text=f'ФИО: {list_for_google_sheet[1]}\n'
+                                        f'Номер группы: {list_for_google_sheet[2]}\n'
+                                        f'Электронная почта: {list_for_google_sheet[4]}\n'
+                                        f'Проблема: {list_for_google_sheet[5]}\n'
+                                        f'Дата и время приема: {list_for_google_sheet[6]}')
 
 
 @dp.message_handler(text='Кафедры ЭФ МГУ')

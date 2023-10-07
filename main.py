@@ -258,16 +258,16 @@ async def fill_name_and_group(m: types.Message):
                                     f'Проблема: {list_for_google_sheet[5]}\n'
                                     f'Дата и время приема: {list_for_google_sheet[6]}')
 
-        # if list_for_google_sheet[7] == 'Полина Чибисова':
-        #     await bot.send_message(chat_id=739380400,
-        #                            text=f'Уважаемая Полина, к вам записался новый человек.\n'
-        #                                 f'Вот его данные:')
-        #     await bot.send_message(chat_id=739380400,
-        #                            text=f'ФИО: {list_for_google_sheet[1]}\n'
-        #                                 f'Номер группы: {list_for_google_sheet[2]}\n'
-        #                                 f'Электронная почта: {list_for_google_sheet[4]}\n'
-        #                                 f'Проблема: {list_for_google_sheet[5]}\n'
-        #                                 f'Дата и время приема: {list_for_google_sheet[6]}')
+        if list_for_google_sheet[7] == 'Полина Чибисова':
+            await bot.send_message(chat_id=739380400,
+                                   text=f'Уважаемая Полина, к вам записался новый человек.\n'
+                                        f'Вот его данные:')
+            await bot.send_message(chat_id=739380400,
+                                   text=f'ФИО: {list_for_google_sheet[1]}\n'
+                                        f'Номер группы: {list_for_google_sheet[2]}\n'
+                                        f'Электронная почта: {list_for_google_sheet[4]}\n'
+                                        f'Проблема: {list_for_google_sheet[5]}\n'
+                                        f'Дата и время приема: {list_for_google_sheet[6]}')
 
         if list_for_google_sheet[6] == 'Среда 11 октября 2023, 14:00' or list_for_google_sheet[
             6] == 'Среда 11 октября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 11 октября 2023, 16:00':
@@ -304,15 +304,15 @@ async def fill_name_and_group(m: types.Message):
             await bot.send_message(chat_id=m.from_user.id,
                                    text=f'Ваша запись успешно удалена.\n'
                                         f'Психолог оповещен о данном происшествии')
-            # await bot.send_message(chat_id=739380400,
-            #                        text=f'Уважаемая Полина, данный человек <b>отказался</b> от встречи с вами.\n'
-            #                             f'Вот его данные:')
-            # await bot.send_message(chat_id=739380400,
-            #                        text=f'ФИО: {list_for_google_sheet[1]}\n'
-            #                             f'Номер группы: {list_for_google_sheet[2]}\n'
-            #                             f'Электронная почта: {list_for_google_sheet[4]}\n'
-            #                             f'Проблема: {list_for_google_sheet[5]}\n'
-            #                             f'Дата и время приема: {list_for_google_sheet[6]}')
+            await bot.send_message(chat_id=739380400,
+                                   text=f'Уважаемая Полина, данный человек <b>отказался</b> от встречи с вами.\n'
+                                        f'Вот его данные:')
+            await bot.send_message(chat_id=739380400,
+                                   text=f'ФИО: {list_for_google_sheet[1]}\n'
+                                        f'Номер группы: {list_for_google_sheet[2]}\n'
+                                        f'Электронная почта: {list_for_google_sheet[4]}\n'
+                                        f'Проблема: {list_for_google_sheet[5]}\n'
+                                        f'Дата и время приема: {list_for_google_sheet[6]}')
 
 
 @dp.message_handler(text='Кафедры ЭФ МГУ')

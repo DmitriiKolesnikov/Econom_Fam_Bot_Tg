@@ -107,6 +107,16 @@ async def prep_command(message: types.Message) -> None:
                            reply_markup=prepodi_kb)
     await message.delete()
 
+@dp.message_handler(text='📆Расписание')
+async def time_table_command(message: types.Message) -> None:
+    await bot.send_photo(chat_id=message.from_user.id,
+                         caption='Чтобы получить свое заветное расписание, вам надо написать свое имя <b>прям '
+                                 'как в паспорте</b> 🧐'+'.\n\n'
+                                 'Например, <b>Пупкин Василий Сергеевич</b>.',
+                         photo='https://cs14.pikabu.ru/post_img/big/2022/03/08/7/1646737740129559994.jpg',
+                         parse_mode='HTML')
+    await message.delete()
+
 
 @dp.message_handler(text='🔎Свободные кабинеты')
 async def free_rooms_command(message: types.Message) -> None:
@@ -342,17 +352,6 @@ async def stagirovki_command(message: types.Message) -> None:
                                  f'по ссылке'+' https://www.econ.msu.ru/students/eas/',
                          photo='https://sravni-news-prod.storage.yandexcloud.net/uploads/2021/12/127523-n42lmrytsk5f'
                                '8acijhwp.jpg')
-    await message.delete()
-
-
-@dp.message_handler(text='📆Расписание')
-async def time_table_command(message: types.Message) -> None:
-    await bot.send_photo(chat_id=message.from_user.id,
-                         caption='Чтобы получить свое заветное расписание, вам надо написать свое имя <b>прям '
-                                 'как в паспорте</b> 🧐'+'.\n\n'
-                                 'Например, <b>Пупкин Василий Сергеевич</b>.',
-                         photo='https://cs14.pikabu.ru/post_img/big/2022/03/08/7/1646737740129559994.jpg',
-                         parse_mode='HTML')
     await message.delete()
 
 

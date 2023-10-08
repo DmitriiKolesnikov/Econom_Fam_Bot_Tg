@@ -236,7 +236,7 @@ async def button_click(message: types.Message):
     buttons.remove(message.text)
     if len(buttons) >= 0:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-        keyboard.add(*buttons[:4])
+        keyboard.add(*buttons[:3])
         list_for_google_sheet.append(message.text)
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Для начала введите свое имя и номер группы в формате\n\n"

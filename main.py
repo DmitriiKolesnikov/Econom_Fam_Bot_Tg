@@ -485,7 +485,8 @@ async def take_user_name(m: types.Message) -> user_name:
                                     f'Номер группы: {list_for_google_sheet[2]}\n'
                                     f'Электронная почта: {list_for_google_sheet[4]}\n'
                                     f'Проблема: {list_for_google_sheet[5]}\n'
-                                    f'Дата и время приема: {list_for_google_sheet[6]}')
+                                    f'Дата и время приема: {list_for_google_sheet[6]}',
+                               reply_markup=kb_main)
 
         if list_for_google_sheet[7] == 'Полина Чибисова':
             await bot.send_message(chat_id=739380400,
@@ -524,7 +525,8 @@ async def take_user_name(m: types.Message) -> user_name:
         if cell_list is None:
             await bot.send_message(chat_id=m.from_user.id,
                                    text=f'Уважаемый пользователь, вы ранее не записовались на прием к психологу,'
-                                        f'поэтому невозможно удалить вашу запись')
+                                        f'поэтому невозможно удалить вашу запись',
+                                   reply_markup=kb_main)
         else:
             for i in cell_list:
                 row_number = i.row
@@ -532,7 +534,8 @@ async def take_user_name(m: types.Message) -> user_name:
                 worksheet.update_cell(row_number, column_number + 8, f'Отмена записи произошла в {datetime.now()}')
             await bot.send_message(chat_id=m.from_user.id,
                                    text=f'Ваша запись успешно удалена.\n'
-                                        f'Психолог оповещен о данном происшествии')
+                                        f'Психолог оповещен о данном происшествии',
+                                   reply_markup=kb_main)
             await bot.send_message(chat_id=739380400,
                                    text=f'Уважаемая Полина, данный человек <b>отказался</b> от встречи с вами.\n'
                                         f'Вот его данные:')

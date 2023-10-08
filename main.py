@@ -362,7 +362,7 @@ async def take_user_name(m: types.Message) -> user_name:
     global full_name
     user_name = m.text.split()
     if len(user_name) == 3 and m.text.istitle():
-        full_name = message.text
+        full_name = m.text
         await bot.send_message(chat_id=m.from_user.id,
                                text=f'Я правильно понимаю, что вас зовут {m.text}',
                                reply_markup=take_user_name_kb)

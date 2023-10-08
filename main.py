@@ -357,42 +357,42 @@ async def fill_name_and_group(m: types.Message):
 
 
 @dp.message_handler()
-async def take_user_name(message: types.Message) -> user_name:
+async def take_user_name(m: types.Message) -> user_name:
     global user_name
     global full_name
-    user_name = message.text.split()
-    if len(user_name) == 3 and message.text.istitle():
+    user_name = m.text.split()
+    if len(user_name) == 3 and m.text.istitle():
         full_name = message.text
-        await bot.send_message(chat_id=message.from_user.id,
-                               text=f'Я правильно понимаю, что вас зовут {message.text}',
+        await bot.send_message(chat_id=m.from_user.id,
+                               text=f'Я правильно понимаю, что вас зовут {m.text}',
                                reply_markup=take_user_name_kb)
 
     elif len(user_name) == 4 and user_name[0] == 'где':
         teachers_name = str(user_name[1] + ' ' + user_name[2] + ' ' + user_name[3])
-        await bot.send_message(chat_id=message.from_user.id,
-                               text=f'{message.from_user.first_name}, вот, где сегодня будет находиться '
+        await bot.send_message(chat_id=m.from_user.id,
+                               text=f'{m.from_user.first_name}, вот, где сегодня будет находиться '
                                     f'<b>{teachers_name}</b>',
                                parse_mode='HTML')
         current_daatetime = str(date.today())
         i = 0
         while i < len(sched_w_st):
             if current_daatetime == sched_w_st[i]['date'] and teachers_name == sched_w_st[i]['teachers']:
-                await bot.send_message(chat_id=message.from_user.id,
+                await bot.send_message(chat_id=m.from_user.id,
                                        text=f"<b>{sched_w_st[i]['place']}</b>\n<b>{sched_w_st[i]['time']}</b>",
                                        parse_mode="HTML")
             i += 1
 
     elif len(user_name) == 4 and user_name[0] == 'Где':
         teachers_name = str(user_name[1] + ' ' + user_name[2] + ' ' + user_name[3])
-        await bot.send_message(chat_id=message.from_user.id,
-                               text=f'{message.from_user.first_name}, вот, где сегодня будет находиться '
+        await bot.send_message(chat_id=m.from_user.id,
+                               text=f'{m.from_user.first_name}, вот, где сегодня будет находиться '
                                     f'<b>{teachers_name}</b>',
                                parse_mode='HTML')
         current_daatetime = str(date.today())
         i = 0
         while i < len(sched_w_st):
             if current_daatetime == sched_w_st[i]['date'] and teachers_name == sched_w_st[i]['teachers']:
-                await bot.send_message(chat_id=message.from_user.id,
+                await bot.send_message(chat_id=m.from_user.id,
                                        text=f"<b>{sched_w_st[i]['place']}</b>\n<b>{sched_w_st[i]['time']}</b>",
                                        parse_mode="HTML")
             i += 1
@@ -402,8 +402,8 @@ async def take_user_name(message: types.Message) -> user_name:
         i = 0
         while i < len(data_all_teachers_and_mails):
             if teachers_name in data_all_teachers_and_mails[i].values():
-                await bot.send_message(chat_id=message.from_user.id,
-                                       text=f"{message.from_user.first_name}, вот почта"
+                await bot.send_message(chat_id=m.from_user.id,
+                                       text=f"{m.from_user.first_name}, вот почта"
                                             f": "
                                             f"<b>{data_all_teachers_and_mails[i]['mail']}</b>",
                                        parse_mode="HTML")
@@ -414,8 +414,8 @@ async def take_user_name(message: types.Message) -> user_name:
         i = 0
         while i < len(data_all_teachers_and_mails):
             if teachers_name in data_all_teachers_and_mails[i].values():
-                await bot.send_message(chat_id=message.from_user.id,
-                                       text=f"{message.from_user.first_name}, вот почта"
+                await bot.send_message(chat_id=m.from_user.id,
+                                       text=f"{m.from_user.first_name}, вот почта"
                                             f": "
                                             f"<b>{data_all_teachers_and_mails[i]['mail']}</b>",
                                        parse_mode="HTML")
@@ -424,17 +424,17 @@ async def take_user_name(message: types.Message) -> user_name:
     elif user_name[0] == "Эта":
         photo = open('1.png', 'rb')
         await get_schedule(full_name)
-        await bot.send_message(chat_id=message.from_user.id,
+        await bot.send_message(chat_id=m.from_user.id,
                                text=f'Вот ваше расписание на эту неделю, {full_name}')
-        await bot.send_photo(chat_id=message.from_user.id,
+        await bot.send_photo(chat_id=m.from_user.id,
                              photo=photo)
 
     elif user_name[0] == "Следующая":
         photo = open('2.png', 'rb')
         await get_schedule(full_name)
-        await bot.send_message(chat_id=message.from_user.id,
+        await bot.send_message(chat_id=m.from_user.id,
                                text=f'Вот ваше расписание на следующую неделю, {full_name}')
-        await bot.send_photo(chat_id=message.from_user.id,
+        await bot.send_photo(chat_id=m.from_user.id,
                              photo=photo)
 
     return user_name

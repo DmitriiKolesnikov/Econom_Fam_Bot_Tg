@@ -91,7 +91,7 @@ async def help_command(message: types.Message) -> None:
                                     
                                  'Кнопка «Психологическая помощь» - забота а вашем здоровье. Не пренебрегайте помощью '
                                  'специалистов. Совмещать успешную учебу, друзей и проблемы очень сложно. '
-                                 'Не позволь им испортить твое пребывание в МГУ!!!',
+                                 'Не позвольте им испортить ваше пребывание в МГУ!!!',
                          photo='https://kartinkof.club/uploads/posts/2022-06/1656094468_3-kartinkof-club-p-kartinki-s'
                                '-nadpisyu-pomogi-mne-3.jpg')
     await message.delete()
@@ -169,8 +169,7 @@ async def stagirovki_command(message: types.Message) -> None:
                          photo='https://sravni-news-prod.storage.yandexcloud.net/uploads/2021/12/127523-n42lmrytsk5f'
                                '8acijhwp.jpg')
     await message.delete()
-
-
+    
 
 # метод для обработки команды гугл шит
 @dp.message_handler(text='⌛Психологическая помощь')

@@ -3,15 +3,15 @@ from datetime import date
 
 list_of_kabs_first_flour = ['Центральная столовая', 'Боковая столовая', 'П1', 'П2']
 
-list_of_kabs_second_flour = []
+list_of_kabs_second_flour = ['П3', 'П4']
 for i in range(201, 268):
     list_of_kabs_second_flour.append(str(i))
 
 list_of_kabs_second_flour.append('Сачок')
 
-list_of_kabs_third_flour = ['Сачок']
+list_of_kabs_third_flour = ['Сачок', 'П5', 'П6']
 
-list_of_kabs_fourth_flour = []
+list_of_kabs_fourth_flour = ["П7", "П8"]
 
 for i in range(401, 468):
     list_of_kabs_fourth_flour.append(str(i))
@@ -22,7 +22,7 @@ for i in range(1, 13):
 
 list_of_kabs_fourth_flour.append('Сачок')
 
-list_of_kabs_fith_flour = []
+list_of_kabs_fith_flour = ["П9"]
 
 list_of_kabs_fith_flour.append('Сачок')
 list_of_kabs_fith_flour.append('Столовка')
@@ -30,6 +30,7 @@ for i in range(502, 571):
     list_of_kabs_fith_flour.append(str(i))
 
 print(list_of_kabs_second_flour)
+
 
 def foo():
     right_now = str(date.today())

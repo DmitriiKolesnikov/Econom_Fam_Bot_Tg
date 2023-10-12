@@ -37,7 +37,6 @@ async def on_startup(_):
     print('Bot started')
 
 
-
 async def delay_reminder(chat_id: int):
     await bot.send_message(chat_id=chat_id,
                            text=f'Уважаемый пользователь, напоминаю вам о записи к психологу')
@@ -106,6 +105,7 @@ async def prep_command(message: types.Message) -> None:
                                 f'вашего вопроса',
                            reply_markup=prepodi_kb)
     await message.delete()
+
 
 @dp.message_handler(text='📆Расписание')
 async def time_table_command(message: types.Message) -> None:

@@ -433,8 +433,9 @@ async def take_user_name(m: types.Message) -> user_name:
                                         f'Электронная почта: {list_for_google_sheet[4]}\n'
                                         f'Проблема: {list_for_google_sheet[5]}\n'
                                         f'Дата и время приема: {list_for_google_sheet[6]}')
-
-
+    elif m.text == "Иди нахуй" or m.text == "иди нахуй":
+        await bot.send_message(m.from_user.id,
+                               text='Сам иди нахуй')
 
     return user_name
 

@@ -34,7 +34,7 @@ print(list_of_kabs_second_flour)
 
 def foo():
     right_now = str(date.today())
-    current_time = '09:00-10:30'
+    current_time = '15:40-17:10'
     for i in range(len(sched_w_st)):
         if sched_w_st[i]['date'] == right_now and sched_w_st[i]['time'] == current_time:
             for i in range(len(sched_w_st)):
@@ -58,6 +58,8 @@ def foo():
                     elif sched_w_st[i]['place'].startswith('5') and str(sched_w_st[i]['place']) in \
                             list_of_kabs_fith_flour:
                         print(list_of_kabs_fith_flour)
+    print(list_of_kabs_first_flour)
+
 
 
 # foo()
@@ -67,3 +69,5 @@ def foo2():
     for i in range(len(sched_w_st)):
         if sched_w_st[i]['time'] == time:
             print(sched_w_st[i]['place'])
+
+foo()

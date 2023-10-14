@@ -70,4 +70,4 @@ def foo2():
         if sched_w_st[i]['time'] == time:
             print(sched_w_st[i]['place'])
 
-foo()
+# foo()

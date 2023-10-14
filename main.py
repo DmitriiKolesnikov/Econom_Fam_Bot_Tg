@@ -24,11 +24,11 @@ dp = Dispatcher(bot)
 
 user_name = ''
 
-buttons = ['Среда 11 октября 2023, 14:00', 'Среда 11 октября 2023, 15:00',
-           'Среда 11 октября 2023, 16:00', 'Среда 18 октября 2023, 14:00',
+buttons = ['Среда 18 октября 2023, 14:00',
            'Среда 18 октября 2023, 15:00', 'Среда 18 октября 2023, 16:00',
            'Среда 25 октября 2023, 14:00', 'Среда 25 октября 2023, 15:00',
-           'Среда 25 октября 2023, 16:00']
+           'Среда 25 октября 2023, 16:00', 'Среда 1 ноября 2023, 14:00',
+           'Среда 1 ноября 2023, 15:00', 'Среда 1 ноября 2023, 16:00']
 psychologist = ['Полина Чибисова', 'Записаться в лист ожидания']
 list_for_google_sheet = []
 
@@ -211,7 +211,7 @@ async def main_psychologist(message: types.Message):
     list_for_google_sheet.clear()
     list_for_google_sheet.append(message.text)
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    keyboard.add(*buttons[:4])
+    keyboard.add(*buttons[:3])
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Выберите время, в которое вам удобно встретиться",
                            parse_mode="HTML",
@@ -387,11 +387,11 @@ async def take_user_name(m: types.Message) -> user_name:
                                         f'Проблема: {list_for_google_sheet[5]}\n'
                                         f'Дата и время приема: {list_for_google_sheet[6]}')
 
-        if list_for_google_sheet[6] == 'Среда 11 октября 2023, 14:00' or list_for_google_sheet[
-            6] == 'Среда 11 октября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 11 октября 2023, 16:00':
+        if list_for_google_sheet[6] == 'Среда 1 ноября 2023, 14:00' or list_for_google_sheet[
+            6] == 'Среда 1 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 1 ноября 2023, 16:00':
             scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
             scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
-                              end_date='2023-10-11', kwargs={'chat_id': m.from_user.id})
+                              end_date='2023-11-01', kwargs={'chat_id': m.from_user.id})
             scheduler.start()
 
         if list_for_google_sheet[6] == 'Среда 18 октября 2023, 14:00' or list_for_google_sheet[

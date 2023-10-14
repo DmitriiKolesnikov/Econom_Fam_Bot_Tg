@@ -210,7 +210,7 @@ async def google_sheet_command(message: types.Message):
 async def main_psychologist(message: types.Message):
     list_for_google_sheet.clear()
     list_for_google_sheet.append(message.text)
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=False, one_time_keyboard=True)
     keyboard.add(*buttons[:3])
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Выберите время, в которое вам удобно встретиться",

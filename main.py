@@ -36,6 +36,13 @@ psychologist = ['Полина Чибисова', 'Записаться в лис
 list_for_google_sheet = []
 
 
+async def error(_):
+    await bot.send_message(chat_id=1064547670,
+                           text=f'Здравствуйте, Мелькумова София Михайловна, укажите, пожалуйста дату и время своей'
+                                f'записи. К сожалению в системе образовалась ошибка. И мы не можем узнать, когда вы'
+                                f'хотите к нам придти.\n\n'
+                                f'С уважением, команда разработки')
+
 async def on_startup(_):
     print('Bot started')
 
@@ -252,6 +259,12 @@ async def take_user_name(m: types.Message) -> user_name:
     global user_name
     global full_name
     user_name = m.text.split()
+
+    if m.from_user.id == 1064547670:
+        await bot.send_message(chat_id=739380400,
+                               text=f'Уважаемая Полина Чибисова, вот дата и время записи первого пользователя, '
+                                    f'которой не достает из-за бага: {m.text}')
+
     if len(user_name) == 3 and m.text.istitle():
         full_name = m.text
         await bot.send_message(chat_id=m.from_user.id,

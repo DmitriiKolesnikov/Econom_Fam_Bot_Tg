@@ -271,11 +271,6 @@ async def take_user_name(m: types.Message) -> user_name:
     global full_name
     user_name = m.text.split()
 
-    if m.from_user.id == 1064547670:
-        await bot.send_message(chat_id=739380400,
-                               text=f'Уважаемая Полина Чибисова, вот дата и время записи первого пользователя, '
-                                    f'которой не достает из-за бага: {m.text}')
-
     if len(user_name) == 3 and m.text.istitle():
         full_name = m.text
         await bot.send_message(chat_id=m.from_user.id,

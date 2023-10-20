@@ -43,6 +43,7 @@ async def error(_):
                                 f'хотите к нам придти.\n\n'
                                 f'С уважением, команда разработки')
 
+
 async def on_startup(_):
     print('Bot started')
 
@@ -221,7 +222,10 @@ async def main_psychologist(message: types.Message):
     list_for_google_sheet.clear()
     list_for_google_sheet.append(message.text)
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    keyboard.add(*buttons[:3])
+    keyboard.add(buttons[0])
+    keyboard.add(buttons[1])
+    keyboard.add(buttons[2])
+    keyboard.add(buttons[3])
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Выберите время, в которое вам удобно встретиться",
                            parse_mode="HTML",
@@ -245,7 +249,10 @@ async def button_click(message: types.Message):
     buttons.remove(message.text)
     if len(buttons) >= 0:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-        keyboard.add(*buttons[:3])
+        keyboard.add(buttons[0])
+        keyboard.add(buttons[1])
+        keyboard.add(buttons[2])
+        keyboard.add(buttons[3])
         list_for_google_sheet.append(message.text)
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Для начала введите свое имя и номер группы в формате\n\n"

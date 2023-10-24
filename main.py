@@ -31,8 +31,8 @@ buttons = [
         'Среда 8 ноября 2023, 16:00', 'Среда 15 ноября 2023, 14:00',
         'Среда 15 ноября 2023, 15:00', 'Среда 15 ноября 2023, 16:00',
         'Среда 22 ноября 2023, 14:00', 'Среда 22 ноября 2023, 15:00',
-        'Среда 22 ноября 2023, 16:00', 'Среда 27 ноября 2023, 14:00',
-        'Среда 27 ноября 2023, 15:00', 'Среда 27 ноября 2023, 16:00'
+        'Среда 22 ноября 2023, 16:00', 'Среда 29 ноября 2023, 14:00',
+        'Среда 29 ноября 2023, 15:00', 'Среда 29 ноября 2023, 16:00'
 
 ]
 psychologist = ['Полина Чибисова', 'Записаться в лист ожидания']
@@ -420,18 +420,32 @@ async def take_user_name(m: types.Message) -> user_name:
                               end_date='2023-11-01', kwargs={'chat_id': m.from_user.id})
             scheduler.start()
 
-        if list_for_google_sheet[6] == 'Среда 18 октября 2023, 14:00' or list_for_google_sheet[
-            6] == 'Среда 18 октября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 18 октября 2023, 16:00':
+        if list_for_google_sheet[6] == 'Среда 8 ноября 2023, 14:00' or list_for_google_sheet[
+            6] == 'Среда 8 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 8 ноября 2023, 16:00':
             scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
             scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
-                              end_date='2023-10-18', kwargs={'chat_id': m.from_user.id})
+                              end_date='2023-11-08', kwargs={'chat_id': m.from_user.id})
             scheduler.start()
 
-        if list_for_google_sheet[6] == 'Среда 25 октября 2023, 14:00' or list_for_google_sheet[
-            6] == 'Среда 25 октября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 25 октября 2023, 16:00':
+        if list_for_google_sheet[6] == 'Среда 15 ноября 2023, 14:00' or list_for_google_sheet[
+            6] == 'Среда 15 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 15 ноября 2023, 16:00':
             scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
             scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
-                              end_date='2023-10-25', kwargs={'chat_id': m.from_user.id})
+                              end_date='2023-11-15', kwargs={'chat_id': m.from_user.id})
+            scheduler.start()
+
+        if list_for_google_sheet[6] == 'Среда 22 ноября 2023, 14:00' or list_for_google_sheet[
+            6] == 'Среда 22 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 22 ноября 2023, 16:00':
+            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
+                              end_date='2023-11-22', kwargs={'chat_id': m.from_user.id})
+            scheduler.start()
+
+        if list_for_google_sheet[6] == 'Среда 29 ноября 2023, 14:00' or list_for_google_sheet[
+            6] == 'Среда 29 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 29 ноября 2023, 16:00':
+            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
+                              end_date='2023-11-29', kwargs={'chat_id': m.from_user.id})
             scheduler.start()
 
     elif user_name[0] == 'Удали' or user_name[0] == 'удали':

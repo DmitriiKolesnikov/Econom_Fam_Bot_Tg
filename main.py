@@ -25,14 +25,14 @@ dp = Dispatcher(bot)
 user_name = ''
 
 buttons = [
-        'Среда 25 октября 2023, 14:00', 'Среда 25 октября 2023, 15:00',
-        'Среда 25 октября 2023, 16:00', 'Среда 1 ноября 2023, 14:00',
+        'Среда 1 ноября 2023, 14:00',
         'Среда 1 ноября 2023, 15:00', 'Среда 1 ноября 2023, 16:00',
         'Среда 8 ноября 2023, 14:00', 'Среда 8 ноября 2023, 15:00',
         'Среда 8 ноября 2023, 16:00', 'Среда 15 ноября 2023, 14:00',
         'Среда 15 ноября 2023, 15:00', 'Среда 15 ноября 2023, 16:00',
         'Среда 22 ноября 2023, 14:00', 'Среда 22 ноября 2023, 15:00',
-        'Среда 22 ноября 2023, 16:00'
+        'Среда 22 ноября 2023, 16:00', 'Среда 27 ноября 2023, 14:00',
+        'Среда 27 ноября 2023, 15:00', 'Среда 27 ноября 2023, 16:00'
 
 ]
 psychologist = ['Полина Чибисова', 'Записаться в лист ожидания']
@@ -230,6 +230,8 @@ async def main_psychologist(message: types.Message):
     keyboard.add(buttons[1])
     keyboard.add(buttons[2])
     keyboard.add(buttons[3])
+    keyboard.add(buttons[4])
+    keyboard.add(buttons[5])
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Выберите время, в которое вам удобно встретиться",
                            parse_mode="HTML",
@@ -257,6 +259,8 @@ async def button_click(message: types.Message):
         keyboard.add(buttons[1])
         keyboard.add(buttons[2])
         keyboard.add(buttons[3])
+        keyboard.add(buttons[4])
+        keyboard.add(buttons[5])
         list_for_google_sheet.append(message.text)
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Для начала введите свое имя и номер группы в формате\n\n"

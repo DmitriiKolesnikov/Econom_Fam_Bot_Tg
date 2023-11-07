@@ -24,25 +24,16 @@ dp = Dispatcher(bot)
 
 user_name = ''
 
-buttons = ['Среда 8 ноября 2023, 14:00', 'Среда 8 ноября 2023, 15:00',
-        'Среда 8 ноября 2023, 16:00', 'Среда 15 ноября 2023, 14:00',
-        'Среда 15 ноября 2023, 15:00', 'Среда 15 ноября 2023, 16:00',
+buttons = [
         'Среда 22 ноября 2023, 14:00', 'Среда 22 ноября 2023, 15:00',
-        'Среда 22 ноября 2023, 16:00', 'Среда 29 ноября 2023, 14:00',
-        'Среда 29 ноября 2023, 15:00', 'Среда 29 ноября 2023, 16:00'
+        'Среда 22 ноября 2023, 16:00', 'Четверг 23 ноября 2023, 14:00',
+        'Четверг 23 ноября 2023, 15:00', 'Четверг 23 ноября 2023, 16:00',
+        'Среда 29 ноября 2023, 14:00', 'Среда 29 ноября 2023, 15:00',
+        'Среда 29 ноября 2023, 16:00'
 
 ]
 psychologist = ['Полина Чибисова', 'Записаться в лист ожидания']
 list_for_google_sheet = []
-
-#
-# bot.send_message(chat_id=1064547670,
-#                        text=f'Здравствуйте, Мелькумова София Михайловна, укажите, пожалуйста дату и время своей'
-#                             f'записи. К сожалению в системе образовалась ошибка. И мы не можем узнать, когда вы'
-#                             f'хотите к нам придти.\n\n'
-#                             f'С уважением, команда разработки')
-# bot.send_message(chat_id=683092826,
-#                        text=f'Тестовый запуск')
 
 
 async def on_startup(_):
@@ -410,32 +401,18 @@ async def take_user_name(m: types.Message) -> user_name:
                                         f'Проблема: {list_for_google_sheet[5]}\n'
                                         f'Дата и время приема: {list_for_google_sheet[6]}')
 
-        if list_for_google_sheet[6] == 'Среда 1 ноября 2023, 14:00' or list_for_google_sheet[
-            6] == 'Среда 1 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 1 ноября 2023, 16:00':
-            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
-                              end_date='2023-11-01', kwargs={'chat_id': m.from_user.id})
-            scheduler.start()
-
-        if list_for_google_sheet[6] == 'Среда 8 ноября 2023, 14:00' or list_for_google_sheet[
-            6] == 'Среда 8 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 8 ноября 2023, 16:00':
-            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
-                              end_date='2023-11-08', kwargs={'chat_id': m.from_user.id})
-            scheduler.start()
-
-        if list_for_google_sheet[6] == 'Среда 15 ноября 2023, 14:00' or list_for_google_sheet[
-            6] == 'Среда 15 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 15 ноября 2023, 16:00':
-            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
-                              end_date='2023-11-15', kwargs={'chat_id': m.from_user.id})
-            scheduler.start()
-
         if list_for_google_sheet[6] == 'Среда 22 ноября 2023, 14:00' or list_for_google_sheet[
             6] == 'Среда 22 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 22 ноября 2023, 16:00':
             scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
             scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
-                              end_date='2023-11-22', kwargs={'chat_id': m.from_user.id})
+                              end_date='2023-11-21', kwargs={'chat_id': m.from_user.id})
+            scheduler.start()
+
+        if list_for_google_sheet[6] == 'Четверг 23 ноября 2023, 14:00' or list_for_google_sheet[
+            6] == 'Четверг 23 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Четверг 23 ноября 2023, 16:00':
+            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
+                              end_date='2023-11-23', kwargs={'chat_id': m.from_user.id})
             scheduler.start()
 
         if list_for_google_sheet[6] == 'Среда 29 ноября 2023, 14:00' or list_for_google_sheet[

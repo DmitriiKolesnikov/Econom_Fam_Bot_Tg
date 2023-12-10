@@ -24,12 +24,11 @@ dp = Dispatcher(bot)
 
 user_name = ''
 
-buttons = [
-        'Среда 13 декабря 2023, 14:00', 'Среда 13 декабря 2023, 15:00',
-        'Среда 13 декабря 2023, 16:00', 'Среда 20 декабря 2023, 14:00',
-        'Среда 20 декабря 2023, 15:00', 'Среда 20 декабря 2023, 16:00',
-        'Среда 27 декабря 2023, 14:00', 'Среда 27 декабря 2023, 15:00',
-        'Среда 27 декабря 2023, 16:00'
+buttons = ['Среда 13 декабря 2023, 14:00', 'Среда 13 декабря 2023, 15:00',
+           'Среда 13 декабря 2023, 16:00', 'Среда 20 декабря 2023, 14:00',
+           'Среда 20 декабря 2023, 15:00', 'Среда 20 декабря 2023, 16:00',
+           'Среда 27 декабря 2023, 14:00', 'Среда 27 декабря 2023, 15:00',
+           'Среда 27 декабря 2023, 16:00'
 
 ]
 psychologist = ['Полина Чибисова', 'Записаться в лист ожидания']
@@ -66,6 +65,30 @@ async def start_command(message: types.Message) -> None:
                                  'психолога. Грустить - вредно!\n\n'
                                  'Что бы более подробно узнать о возможностях бота, нажмите \n/description',
                          reply_markup=kb_main)
+    await message.delete()
+
+
+@dp.message_handler(text='Вернуться в главное меню')
+async def main_menu_command(message: types.Message) -> None:
+    telegram_user_name = message.from_user.full_name
+    await bot.send_photo(chat_id=message.from_user.id,
+                         photo='https://www.econ.msu.ru/sys/raw.php?o=65079&p=attachment',
+                         caption=f'<b>{telegram_user_name}</b>, еще раз здравствуйте. Напомню, чем смогу вам '
+                                 f'помочь:\n\n'
+                                 '1. Помогу узнать ваше расписание.\n\n' 
+                                 '2. Помогу найти преподавателя и его контактные данные.\n\n' 
+                                 '3. Помогу быть в курсе всех событий факультета: официальных и не очень).\n\n'
+                                 '4. Помогу ознакомиться со всеми кафедрами экономического факультета, возможно, вам '
+                                 'это '
+                                 'поможет в дальнейшем.\n\n'
+                                 '5. Совместными усилиями с нашим факультетом поможем вам устроиться на работу.\n\n'
+                                 '6. Постараюсь не допустить депрессивных мыслей во время обучения в МГУ с помощью на'
+                                 'шего '
+                                 'психолога. Грустить - вредно!\n\n'
+                                 'Что бы более подробно узнать о возможностях бота, нажмите \n/description',
+                         parse_mode="HTML",
+                         reply_markup=kb_main)
+
     await message.delete()
 
 
@@ -178,15 +201,7 @@ async def stagirovki_command(message: types.Message) -> None:
 @dp.message_handler(text='⌛Психологическая помощь')
 async def google_sheet_command(message: types.Message):
     await bot.send_photo(chat_id=message.from_user.id,
-                         caption='👩🏼 '+'‍К специалисту можно записаться и прийти на консультацию, чтобы поработать '
-                                 'с внутренними переживаниями или поделиться накопившимися мыслями и эмоциями.'
-                                 ' ⌛ '+'Продолжительность сеанса — около 50 минут '
-                                 'Если вам нужна помощь в разрешении какой-либо возникшей проблемы и вы бы хотели '
-                                 'получить психологическую поддержку, заполните, пожалуйста, анкету, которая будет '
-                                 'предложена ниже.',
-                         photo='https://babr24.com/n2p/i/2021/1/21_1_5_2_05132453_b.jpg')
-    await bot.send_message(chat_id=message.from_user.id,
-                           text=f"Прием осуществляется по средам с 14.00 до 17.00 (ауд 447)\n"
+                         caption=f"👩🏼 Прием осуществляется по средам с 14.00 до 17.00 (ауд 447)\n"
                                 f"На беседу с каждым человеком выделено 50 минут.\n\n"
                                 f"<b>ВАЖНО</b>: пока у нас только один психолог, Чибисова Полина. "
                                 f"Если Вы знакомы с ней лично, она не сможет к сожалению с Вами работать. "
@@ -200,9 +215,12 @@ async def google_sheet_command(message: types.Message):
                                 f"<b>'Удали мою запись'</b>, иначе встреча будет считаться состоявшейся "
                                 f"(переносить/отменять встречи можно не более 1 раза). "
                                 f"При опоздании встреча не продлевается. <b>Не опаздывайте!</b>",
-                           parse_mode="HTML")
+                         photo='https://babr24.com/n2p/i/2021/1/21_1_5_2_05132453_b.jpg',
+                         parse_mode="HTML")
+
     psychologist_keaboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     psychologist_keaboard.add(*psychologist)
+    psychologist_keaboard.add('Вернуться в главное меню')
     await bot.send_message(chat_id=message.from_user.id,
                            text=f'Выберите психолога, с которым вы хотите встретиться',
                            parse_mode="HTML",
@@ -214,12 +232,13 @@ async def main_psychologist(message: types.Message):
     list_for_google_sheet.clear()
     list_for_google_sheet.append(message.text)
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    keyboard.add(buttons[0])
-    keyboard.add(buttons[1])
-    keyboard.add(buttons[2])
-    keyboard.add(buttons[3])
-    keyboard.add(buttons[4])
-    keyboard.add(buttons[5])
+    if len(buttons) > 5:
+        for i in range(0, 6):
+            keyboard.add(buttons[i])
+    else:
+        for i in range(0, len(buttons)):
+            keyboard.add(buttons[i])
+    keyboard.add('Вернуться в главное меню')
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Выберите время, в которое вам удобно встретиться",
                            parse_mode="HTML",
@@ -243,12 +262,12 @@ async def button_click(message: types.Message):
     buttons.remove(message.text)
     if len(buttons) >= 0:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-        keyboard.add(buttons[0])
-        keyboard.add(buttons[1])
-        keyboard.add(buttons[2])
-        keyboard.add(buttons[3])
-        keyboard.add(buttons[4])
-        keyboard.add(buttons[5])
+        for i in range(0, 6):
+            if len(buttons) - 1 >= 5:
+                keyboard.add(buttons[i])
+            else:
+                pass
+        keyboard.add('Записаться в главное меню')
         list_for_google_sheet.append(message.text)
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Для начала введите свое имя и номер группы в формате\n\n"
@@ -275,12 +294,13 @@ async def take_user_name(m: types.Message) -> user_name:
                                text=f'{m.from_user.first_name}, вот, где сегодня будет находиться '
                                     f'<b>{teachers_name}</b>',
                                parse_mode='HTML')
-        current_daatetime = str(date.today())
+        current_datetime = str(date.today())
         i = 0
         while i < len(sched_w_st):
-            if current_daatetime == sched_w_st[i]['date'] and teachers_name == sched_w_st[i]['teachers']:
+            if '2023-12-12' == sched_w_st[i]['date'] and teachers_name == sched_w_st[i]['teachers']:
                 await bot.send_message(chat_id=m.from_user.id,
-                                       text=f"<b>{sched_w_st[i]['place']}</b>\n<b>{sched_w_st[i]['time']}</b>",
+                                       text=f"<b>{sched_w_st[i]['place']}</b>\n<b>{sched_w_st[i]['time']}</b>\n"
+                                            f"",
                                        parse_mode="HTML")
             i += 1
 
@@ -290,12 +310,13 @@ async def take_user_name(m: types.Message) -> user_name:
                                text=f'{m.from_user.first_name}, вот, где сегодня будет находиться '
                                     f'<b>{teachers_name}</b>',
                                parse_mode='HTML')
-        current_daatetime = str(date.today())
+        current_datetime = str(date.today())
         i = 0
         while i < len(sched_w_st):
-            if current_daatetime == sched_w_st[i]['date'] and teachers_name == sched_w_st[i]['teachers']:
+            if '2023-12-12' == sched_w_st[i]['date'] and teachers_name == sched_w_st[i]['teachers']:
                 await bot.send_message(chat_id=m.from_user.id,
-                                       text=f"<b>{sched_w_st[i]['place']}</b>\n<b>{sched_w_st[i]['time']}</b>",
+                                       text=f"<b>{sched_w_st[i]['place']}</b>\n<b>{sched_w_st[i]['time']}</b>\n"
+                                            f"",
                                        parse_mode="HTML")
             i += 1
 
@@ -463,9 +484,9 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
     elif callback.data == 'correct_name':
         await callback.message.edit_text(text=f"Если вы хотите узнать расписание на эту неделю, то достаточно нажать на "
                                               f"кнопку:\n"
-                                              f" <b>'Эта'</b>.\n\n"
+                                              f" <b>«Эта»</b>.\n\n"
                                               f"Если вы хотите узнать расписание на следующую неделю, то достаточно "
-                                              f"нажать на кнопку:\n<b>'Следующая'</b>.\n\n",
+                                              f"нажать на кнопку:\n<b>«Следующая»</b>.\n\n",
                                          parse_mode="HTML",
                                          reply_markup=pic_keyboard)
 

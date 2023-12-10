@@ -29,7 +29,7 @@ list_of_kabs_fith_flour.append('Столовка')
 for i in range(502, 571):
     list_of_kabs_fith_flour.append(str(i))
 
-print(list_of_kabs_second_flour)
+# print(list_of_kabs_second_flour)
 
 
 def foo():
@@ -64,10 +64,3 @@ def foo():
 
 # foo()
 
-def foo2():
-    time = '18:55-20:25'
-    for i in range(len(sched_w_st)):
-        if sched_w_st[i]['time'] == time:
-            print(sched_w_st[i]['place'])
-
-# foo()

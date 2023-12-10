@@ -297,7 +297,7 @@ async def take_user_name(m: types.Message) -> user_name:
         current_datetime = str(date.today())
         i = 0
         while i < len(sched_w_st):
-            if '2023-12-12' == sched_w_st[i]['date'] and teachers_name == sched_w_st[i]['teachers']:
+            if current_datetime == sched_w_st[i]['date'] and teachers_name == sched_w_st[i]['teachers']:
                 await bot.send_message(chat_id=m.from_user.id,
                                        text=f"<b>{sched_w_st[i]['place']}</b>\n<b>{sched_w_st[i]['time']}</b>\n"
                                             f"",
@@ -313,7 +313,7 @@ async def take_user_name(m: types.Message) -> user_name:
         current_datetime = str(date.today())
         i = 0
         while i < len(sched_w_st):
-            if '2023-12-12' == sched_w_st[i]['date'] and teachers_name == sched_w_st[i]['teachers']:
+            if current_datetime == sched_w_st[i]['date'] and teachers_name == sched_w_st[i]['teachers']:
                 await bot.send_message(chat_id=m.from_user.id,
                                        text=f"<b>{sched_w_st[i]['place']}</b>\n<b>{sched_w_st[i]['time']}</b>\n"
                                             f"",

@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 # Константы
-TIMEOUT = 0.5
+TIMEOUT = 1
 
 
 async def get_schedule(name):

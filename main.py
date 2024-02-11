@@ -15,7 +15,7 @@ from datetime import date
 from kabs_data_and_logic import list_of_kabs_first_flour, list_of_kabs_second_flour, \
     list_of_kabs_third_flour, list_of_kabs_fourth_flour, list_of_kabs_fith_flour
 
-TOKEN_API = '6431263054:AAEhJ6tGq0YTFBHFQf_8sIpMMiEJycYU_Dg'
+TOKEN_API = '6214205049:AAG2hKi_LViqSZuxbB37VMoyySSK3w7i2Fg'
 
 
 bot = Bot(TOKEN_API)
@@ -28,9 +28,41 @@ dp = Dispatcher(bot)
 
 user_name = ''
 
-buttons = [
-           'Среда 17 января 2024, 14:00', 'Среда 17 января 2024, 15:00', 'Среда 17 января 2024, 16:00',
+buttons_keys = [
+    'Среда 14 февраля 2024, 14:00', 'Среда 14 февраля 2024, 15:00',
+    'Среда 21 февраля 2024, 14:00', 'Среда 21 февраля 2024, 15:00',
+    'Среда 28 февраля 2024, 14:00', 'Среда 28 февраля 2024, 15:00',
+    'Среда 6 марта 2024, 14:00', 'Среда 6 марта 2024, 15:00',
+    'Среда 13 марта 2024, 14:00', 'Среда 13 марта 2024, 15:00',
+    'Среда 20 марта 2024, 14:00', 'Среда 20 марта 2024, 15:00',
+    'Среда 27 марта 2024, 14:00', 'Среда 27 марта 2024, 15:00',
+    'Среда 3 апреля 2024, 14:00', 'Среда 3 апреля 2024, 15:00',
+    'Среда 10 апреля 2024, 14:00', 'Среда 10 апреля 2024, 15:00',
+    'Среда 17 апреля 2024, 14:00', 'Среда 17 апреля 2024, 15:00',
+    'Среда 24 апреля 2024, 14:00', 'Среда 24 апреля 2024, 15:00',
+    'Среда 8 мая 2024, 14:00', 'Среда 8 мая 2024, 15:00',
+    'Среда 15 мая 2024, 14:00', 'Среда 15 мая 2024, 15:00',
+    'Среда 22 мая 2024, 14:00', 'Среда 22 мая 2024, 15:00',
+    'Среда 29 мая 2024, 14:00', 'Среда 29 мая 2024, 15:00',
 ]
+buttons_values = [
+    datetime.strptime('2024-02-14', '%Y-%m-%d'), datetime.strptime('2024-02-14', '%Y-%m-%d'),
+    datetime.strptime('2024-02-21', '%Y-%m-%d'), datetime.strptime('2024-02-21', '%Y-%m-%d'),
+    datetime.strptime('2024-02-28', '%Y-%m-%d'), datetime.strptime('2024-02-28', '%Y-%m-%d'),
+    datetime.strptime('2024-03-06', '%Y-%m-%d'), datetime.strptime('2024-03-06', '%Y-%m-%d'),
+    datetime.strptime('2024-03-13', '%Y-%m-%d'), datetime.strptime('2024-03-13', '%Y-%m-%d'),
+    datetime.strptime('2024-03-20', '%Y-%m-%d'), datetime.strptime('2024-03-20', '%Y-%m-%d'),
+    datetime.strptime('2024-03-27', '%Y-%m-%d'), datetime.strptime('2024-03-27', '%Y-%m-%d'),
+    datetime.strptime('2024-04-03', '%Y-%m-%d'), datetime.strptime('2024-04-03', '%Y-%m-%d'),
+    datetime.strptime('2024-04-10', '%Y-%m-%d'), datetime.strptime('2024-04-10', '%Y-%m-%d'),
+    datetime.strptime('2024-04-17', '%Y-%m-%d'), datetime.strptime('2024-04-17', '%Y-%m-%d'),
+    datetime.strptime('2024-04-24', '%Y-%m-%d'), datetime.strptime('2024-04-24', '%Y-%m-%d'),
+    datetime.strptime('2024-05-08', '%Y-%m-%d'), datetime.strptime('2024-05-08', '%Y-%m-%d'),
+    datetime.strptime('2024-05-15', '%Y-%m-%d'), datetime.strptime('2024-05-15', '%Y-%m-%d'),
+    datetime.strptime('2024-05-22', '%Y-%m-%d'), datetime.strptime('2024-05-22', '%Y-%m-%d'),
+    datetime.strptime('2024-05-29', '%Y-%m-%d'), datetime.strptime('2024-05-29', '%Y-%m-%d')
+]
+buttons_dict = dict(zip(buttons_keys, buttons_values))
 psychologist = ['Полина Чибисова', 'Записаться в лист ожидания']
 list_for_google_sheet = []
 
@@ -232,12 +264,12 @@ async def main_psychologist(message: types.Message):
     list_for_google_sheet.clear()
     list_for_google_sheet.append(message.text)
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    if len(buttons) > 5:
+    if len(buttons_keys) > 5:
         for i in range(0, 6):
-            keyboard.add(buttons[i])
+            keyboard.add(buttons_keys[i])
     else:
-        for i in range(0, len(buttons)):
-            keyboard.add(buttons[i])
+        for i in range(0, len(buttons_keys)):
+            keyboard.add(buttons_keys[i])
     keyboard.add('Вернуться в главное меню')
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Выберите время, в которое вам удобно встретиться",
@@ -257,14 +289,14 @@ async def extra_pscychologist(message: types.Message):
 
 
 # Обработка нажатий на кнопки
-@dp.message_handler(lambda message: message.text in buttons)
+@dp.message_handler(lambda message: message.text in buttons_keys)
 async def button_click(message: types.Message):
-    buttons.remove(message.text)
-    if len(buttons) >= 0:
+    buttons_keys.remove(message.text)
+    if len(buttons_keys) >= 0:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
         for i in range(0, 6):
-            if len(buttons) - 1 >= 5:
-                keyboard.add(buttons[i])
+            if len(buttons_keys) - 1 >= 5:
+                keyboard.add(buttons_keys[i])
             else:
                 pass
         keyboard.add('Записаться в главное меню')

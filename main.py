@@ -76,6 +76,13 @@ async def delay_reminder(chat_id: int):
                            text=f'Уважаемый пользователь, напоминаю вам о записи к психологу')
 
 
+async def job(chat_id, user_name, session_date):
+    await bot.send_message(chat_id=chat_id,
+                           text=f'Уважаемый <b>{user_name}</b>, \nнапоминаю вам о записи к психологу.\n\n'
+                                f'Дата записи <b>{session_date}</b>, \nждем вас в <b>447 кабинете</b> 😊😊😊.',
+                           parse_mode="HTML")
+
+
 @dp.message_handler(commands=['start'])
 async def start_command(message: types.Message) -> None:
     telegram_user_name = message.from_user.full_name
@@ -232,21 +239,26 @@ async def stagirovki_command(message: types.Message) -> None:
 # метод для обработки команды гугл шит
 @dp.message_handler(text='⌛Психологическая помощь')
 async def google_sheet_command(message: types.Message):
+    for val in buttons_values:
+        if datetime.now() - timedelta(hours=16) > val:
+            position_number = buttons_values.index(val)
+            del buttons_keys[position_number]
+            del buttons_values[position_number]
     await bot.send_photo(chat_id=message.from_user.id,
                          caption=f"👩🏼 Прием осуществляется по средам с 14.00 до 17.00 (ауд 447)\n"
-                                f"На беседу с каждым человеком выделено 50 минут.\n\n"
-                                f"<b>ВАЖНО</b>: пока у нас только один психолог, Чибисова Полина. "
-                                f"Если Вы знакомы с ней лично, она не сможет к сожалению с Вами работать. "
-                                f"В этом случае <b>не надо</b> записываться на время, "
-                                f"<b>запишитесь в лист ожидания</b>.\n\n"
-                                f"У Вас есть возможность записаться на <b>2 бесплатные встречи</b>. "
-                                f"Записаться на прием  можно не позже, чем за 48 часов до встречи."
-                                f"Если Вам необходимо будет перенести или отменить встречу, "
-                                f"пожалуйста, <b>напишите об этом за 48 часов до начала сессии</b> "
-                                f"боту с помощью сообщения "
-                                f"<b>'Удали мою запись'</b>, иначе встреча будет считаться состоявшейся "
-                                f"(переносить/отменять встречи можно не более 1 раза). "
-                                f"При опоздании встреча не продлевается. <b>Не опаздывайте!</b>",
+                                 f"На беседу с каждым человеком выделено 50 минут.\n\n"
+                                 f"<b>ВАЖНО</b>: пока у нас только один психолог, Чибисова Полина. "
+                                 f"Если Вы знакомы с ней лично, она не сможет к сожалению с Вами работать. "
+                                 f"В этом случае <b>не надо</b> записываться на время, "
+                                 f"<b>запишитесь в лист ожидания</b>.\n\n"
+                                 f"У Вас есть возможность записаться на <b>2 бесплатные встречи</b>. "
+                                 f"Записаться на прием  можно не позже, чем за 48 часов до встречи."
+                                 f"Если Вам необходимо будет перенести или отменить встречу, "
+                                 f"пожалуйста, <b>напишите об этом за 48 часов до начала сессии</b> "
+                                 f"боту с помощью сообщения "
+                                 f"<b>'Удали мою запись'</b>, иначе встреча будет считаться состоявшейся "
+                                 f"(переносить/отменять встречи можно не более 1 раза). "
+                                 f"При опоздании встреча не продлевается. <b>Не опаздывайте!</b>",
                          photo='https://babr24.com/n2p/i/2021/1/21_1_5_2_05132453_b.jpg',
                          parse_mode="HTML")
 
@@ -263,13 +275,17 @@ async def google_sheet_command(message: types.Message):
 async def main_psychologist(message: types.Message):
     list_for_google_sheet.clear()
     list_for_google_sheet.append(message.text)
+    for key in list(buttons_dict.keys()):
+        if datetime.now() - timedelta(hours=16) > buttons_dict[key]:
+            del buttons_dict[key]
+    keys = list(buttons_dict.keys())
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    if len(buttons_keys) > 5:
+    if len(keys) > 5:
         for i in range(0, 6):
-            keyboard.add(buttons_keys[i])
+            keyboard.add(keys[i])
     else:
-        for i in range(0, len(buttons_keys)):
-            keyboard.add(buttons_keys[i])
+        for i in range(0, len(keys)):
+            keyboard.add(keys[i])
     keyboard.add('Вернуться в главное меню')
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Выберите время, в которое вам удобно встретиться",
@@ -288,19 +304,26 @@ async def extra_pscychologist(message: types.Message):
                            parse_mode="HTML")
 
 
-# Обработка нажатий на кнопки
-@dp.message_handler(lambda message: message.text in buttons_keys)
+# Обработка нажатий на кнопку
+@dp.message_handler(lambda message: message.text in buttons_dict.keys())
 async def button_click(message: types.Message):
-    buttons_keys.remove(message.text)
-    if len(buttons_keys) >= 0:
+    end_date = str(buttons_dict[message.text]).split()[0]
+    scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+    scheduler.add_job(job, trigger='cron', day_of_week='1,3,5',
+                      hour=18, minute=30, end_date=end_date,
+                      kwargs={'chat_id': message.from_user.id, 'user_name': message.from_user.full_name,
+                              'session_date': message.text})
+    scheduler.start()
+    del buttons_dict[message.text]
+    keys = list(buttons_dict.keys())
+    if len(keys) >= 0:
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
         for i in range(0, 6):
-            if len(buttons_keys) - 1 >= 5:
-                keyboard.add(buttons_keys[i])
+            if len(keys) - 1 >= 5:
+                keyboard.add(keys[i])
             else:
                 pass
         keyboard.add('Записаться в главное меню')
-        list_for_google_sheet.append(message.text)
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Для начала введите свое имя и номер группы в формате\n\n"
                                 f"<b>Колесников Дмитрий Михайлович Э305</b>\n\n"

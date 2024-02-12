@@ -324,6 +324,7 @@ async def button_click(message: types.Message):
             else:
                 pass
         keyboard.add('Записаться в главное меню')
+        list_for_google_sheet.append(message.text)
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Для начала введите свое имя и номер группы в формате\n\n"
                                 f"<b>Колесников Дмитрий Михайлович Э305</b>\n\n"

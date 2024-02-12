@@ -303,7 +303,7 @@ data_all_teachers_and_mails = [{"id":2253,"name":"Аблаев Эмиль Юрь
                                {"id":548,"name":"Соловьёва Ольга Витальевна", "mail": "olga.v.soloveva@mail.ru", "role":"teacher","secret":"F40438B554CC0E3D96EE6064C5798F55"},
                                {"id":1217,"name":"Солодухина Анна Владимировна", "mail": "asolodukhina@gmail.com", "role":"teacher","secret":"4BFBD52F4E8466DC12AAF30B7E057B66"},
                                {"id":2258,"name":"Спектор Станислав Викторович", "mail": None, "role":"teacher","secret":None},
-                               {"id":2075,"name":"Ставнийчук Анна Юрьевна", " mail": "stavniychuk@econ.msu.ru", "role":"teacher","secret":"78D8ADECC0F8DA2D414B6776334C038C"},
+                               {"id":2075,"name":"Ставнийчук Анна Юрьевна", "mail": "stavniychuk@econ.msu.ru", "role":"teacher","secret":"78D8ADECC0F8DA2D414B6776334C038C"},
                                {"id":465,"name":"Стариков Евгений Вениаминович", "mail": None, "role":"teacher","secret":"2217AD1DD50C1017D3DF6B44B7C45508"},
                                {"id":1130,"name":"Старков Владимир Германович", "mail": None, "role":"teacher","secret":"24B43FB034A10D78BEC71274033B4096"},
                                {"id":643,"name":"Старовойтова Елена Витальевна", "mail": "starovoytova@econ.msu.ru", "role":"teacher","secret":"881C6EFA917CFF1C97A74E03E15F43E8"},
@@ -378,6 +378,8 @@ data_all_teachers_and_mails = [{"id":2253,"name":"Аблаев Эмиль Юрь
                                {"id":1419,"name":"Энговатова Александра Андреевна", "mail": "alexengovatova@gmail.com", "role":"teacher","secret":"0C3DD1F58F7EF11B0EB09971760DFDBD"},
                                {"id":315,"name":"Эченикэ Владимир Хосе", ",mail": "risks@econ.msu.ru, vjeche@econ.msu.ru", "role":"teacher","secret":"D1C373AB1570CFB9A7DBB53C186B37A2"},
                                {"id":2256,"name":"Юй Цзян", "mail": None, "role":"teacher","secret":None}]
+
+
 
 
 sched_w_st = data_without_students["sched"]

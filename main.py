@@ -1,16 +1,17 @@
 import pandas as pd
 from aiogram import Bot, executor, Dispatcher, types
-from Main_kb import kb_main, pic_keyboard
-from Kafedri_data import inline_kb_kafedri
+from Main_kb import kb_main, pic_keyboard, psychology_answer_kb, psychology_order_confirmation_kb
 from Take_user_name_inline_kb import take_user_name_kb
 from Prepodi_inline_kb import prepodi_kb
 from Free_room_kb import free_room_kb
 from Meropriatia_kb import meropriatia_kb
 from Json_data import sched_w_st, data_all_teachers_and_mails
 from Google_sheet import *
+from tests import teachers_dict_1
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from datetime import datetime
+from datetime import datetime, timedelta
 from sercher_cacsa import get_schedule
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from datetime import date
 from kabs_data_and_logic import list_of_kabs_first_flour, list_of_kabs_second_flour, \
     list_of_kabs_third_flour, list_of_kabs_fourth_flour, list_of_kabs_fith_flour
@@ -21,10 +22,8 @@ TOKEN_API = '6431263054:AAEhJ6tGq0YTFBHFQf_8sIpMMiEJycYU_Dg'
 bot = Bot(TOKEN_API)
 dp = Dispatcher(bot)
 
-#Чтобы один раз зарегался, и больше не ебать мозгу по поводу написания своего имени
-#Ебануть напоминалки за час
 #Ебануть проверку на наличие персоны на приеме
-#Ебануть счетчик пропусков
+
 
 user_name = ''
 
@@ -63,6 +62,7 @@ buttons_values = [
     datetime.strptime('2024-05-29', '%Y-%m-%d'), datetime.strptime('2024-05-29', '%Y-%m-%d')
 ]
 buttons_dict = dict(zip(buttons_keys, buttons_values))
+buttons_dict_copy = buttons_dict.copy()
 psychologist = ['Полина Чибисова', 'Записаться в лист ожидания']
 list_for_google_sheet = []
 
@@ -71,14 +71,18 @@ async def on_startup(_):
     print('Bot started')
 
 
-async def delay_reminder(chat_id: int):
+async def feedback_message(chat_id, users_name, kb):
     await bot.send_message(chat_id=chat_id,
-                           text=f'Уважаемый пользователь, напоминаю вам о записи к психологу')
+                           text=f'Уважаемый(ая) {users_name}, вы завершили занятие с психологом. Пожалуйста, '
+                                f'нажмите на кнопку «Завершить сеанс».\n\n'
+                                f'<b>Только в данном</b> случае ваша запись <b>завершится официально</b>!',
+                           parse_mode="HTML",
+                           reply_markup=kb)
 
 
-async def job(chat_id, user_name, session_date):
+async def job(chat_id, users_name, session_date):
     await bot.send_message(chat_id=chat_id,
-                           text=f'Уважаемый <b>{user_name}</b>, \nнапоминаю вам о записи к психологу.\n\n'
+                           text=f'Уважаемый <b>{users_name}</b>, \nнапоминаю вам о записи к психологу.\n\n'
                                 f'Дата записи <b>{session_date}</b>, \nждем вас в <b>447 кабинете</b> 😊😊😊.',
                            parse_mode="HTML")
 
@@ -95,11 +99,8 @@ async def start_command(message: types.Message) -> None:
                                  '1. Помогу узнать ваше расписание.\n\n' 
                                  '2. Помогу найти преподавателя и его контактные данные.\n\n' 
                                  '3. Помогу быть в курсе всех событий факультета: официальных и не очень).\n\n'
-                                 '4. Помогу ознакомиться со всеми кафедрами экономического факультета, возможно, вам '
-                                 'это '
-                                 'поможет в дальнейшем.\n\n'
-                                 '5. Совместными усилиями с нашим факультетом поможем вам устроиться на работу.\n\n'
-                                 '6. Постараюсь не допустить депрессивных мыслей во время обучения в МГУ с помощью на'
+                                 '4. Помогу найти свободные кабинеты на факультете для приятного досуга.\n\n'
+                                 '4. Постараюсь не допустить депрессивных мыслей во время обучения в МГУ с помощью на'
                                  'шего '
                                  'психолога. Грустить - вредно!\n\n'
                                  'Что бы более подробно узнать о возможностях бота, нажмите \n/description',
@@ -117,11 +118,8 @@ async def main_menu_command(message: types.Message) -> None:
                                  '1. Помогу узнать ваше расписание.\n\n' 
                                  '2. Помогу найти преподавателя и его контактные данные.\n\n' 
                                  '3. Помогу быть в курсе всех событий факультета: официальных и не очень).\n\n'
-                                 '4. Помогу ознакомиться со всеми кафедрами экономического факультета, возможно, вам '
-                                 'это '
-                                 'поможет в дальнейшем.\n\n'
-                                 '5. Совместными усилиями с нашим факультетом поможем вам устроиться на работу.\n\n'
-                                 '6. Постараюсь не допустить депрессивных мыслей во время обучения в МГУ с помощью на'
+                                 '4. Помогу найти свободные кабинеты на факультете для приятного досуга.\n\n'
+                                 '5. Постараюсь не допустить депрессивных мыслей во время обучения в МГУ с помощью на'
                                  'шего '
                                  'психолога. Грустить - вредно!\n\n'
                                  'Что бы более подробно узнать о возможностях бота, нажмите \n/description',
@@ -146,12 +144,6 @@ async def help_command(message: types.Message) -> None:
                                     
                                  'С помощью кнопки «Мероприятия» вы станете активным участником жизни ВУЗа, найдете '
                                  'себе новых друзей с общими интересами.\n\n'
-                                    
-                                 'С помощью кнопки «Кафедры ЭФ МГУ» вы познакомитесь со всеми кафедрами факультета. '
-                                 'Это вам сильно поможет при написании курсовой работы и диплома))). \n\n'
-                                    
-                                 'С помощью кнопки «Помощь с работой» вы сможете найти себе официальную стажировку. '
-                                 'В этом вам поможет сам ЭФ МГУ. \n\n'
                                     
                                  'Кнопка «Психологическая помощь» - забота а вашем здоровье. Не пренебрегайте помощью '
                                  'специалистов. Совмещать успешную учебу, друзей и проблемы очень сложно. '
@@ -204,37 +196,8 @@ async def meropriatia_command(message: types.Message) -> None:
                          photo='https://static.tildacdn.com/tild6138-3431-4134-a566-393364393663/EFMSU_mag_edita'
                                'ble_G.jpg',
                          reply_markup=meropriatia_kb)
-
-
-@dp.message_handler(text='Кафедры ЭФ МГУ')
-async def kafedri_command(message: types.Message) -> None:
-    await bot.send_photo(chat_id=message.from_user.id,
-                         caption='Здесь можно ознакомиться со списком кафедр,'
-                                 'представленных на экономическом факультете.\n'
-                                 'Чтобы узнать больше о каждой из них, достаточно '
-                                 'нажать на понравившуюся вам!',
-                         photo='https://www.msu.ru/info/map/images/46/photo4.jpg',
-                         reply_markup=inline_kb_kafedri)
     await message.delete()
 
-
-@dp.message_handler(text='💰Помощь с работой')
-async def stagirovki_command(message: types.Message) -> None:
-    await bot.send_photo(chat_id=message.from_user.id,
-                         caption=f'Сегодня Служба содействия трудоустройству имеет широкие контакты с компаниями, '
-                                 f'заинтересованными в выпускниках факультета. Список компаний и сфер их деятельности'
-                                 f' постоянно расширяется - в экономистах и менеджерах нуждаются  компании практически'
-                                 f' любого профиля. При этом наиболее активными партнерами Факультета являются '
-                                 f'бухгалтерские/аудиторские компании, финансовые организации, страховые компании, '
-                                 f'производители продуктов и товаров народного потребления, компании, специализирующиеся'
-                                 f' на недвижимости, кадровые, телекоммуникационные компании, государственные и '
-                                 f'научно-исследовательские структуры. Для более подробной информациии и помощи, '
-                                 f'перейдите'
-                                 f'по ссылке'+' https://www.econ.msu.ru/students/eas/',
-                         photo='https://sravni-news-prod.storage.yandexcloud.net/uploads/2021/12/127523-n42lmrytsk5f'
-                               '8acijhwp.jpg')
-    await message.delete()
-    
 
 # метод для обработки команды гугл шит
 @dp.message_handler(text='⌛Психологическая помощь')
@@ -255,8 +218,8 @@ async def google_sheet_command(message: types.Message):
                                  f"Записаться на прием  можно не позже, чем за 48 часов до встречи."
                                  f"Если Вам необходимо будет перенести или отменить встречу, "
                                  f"пожалуйста, <b>напишите об этом за 48 часов до начала сессии</b> "
-                                 f"боту с помощью сообщения "
-                                 f"<b>'Удали мою запись'</b>, иначе встреча будет считаться состоявшейся "
+                                 f"для этого надо будет нажать на кнопку <b>«Отменить запись»</b>"
+                                 f", иначе встреча будет считаться состоявшейся "
                                  f"(переносить/отменять встречи можно не более 1 раза). "
                                  f"При опоздании встреча не продлевается. <b>Не опаздывайте!</b>",
                          photo='https://babr24.com/n2p/i/2021/1/21_1_5_2_05132453_b.jpg',
@@ -270,27 +233,39 @@ async def google_sheet_command(message: types.Message):
                            parse_mode="HTML",
                            reply_markup=psychologist_keaboard)
 
+    await message.delete()
+
 
 @dp.message_handler(text="Полина Чибисова")
 async def main_psychologist(message: types.Message):
-    list_for_google_sheet.clear()
-    list_for_google_sheet.append(message.text)
-    for key in list(buttons_dict.keys()):
-        if datetime.now() - timedelta(hours=16) > buttons_dict[key]:
-            del buttons_dict[key]
-    keys = list(buttons_dict.keys())
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-    if len(keys) > 5:
-        for i in range(0, 6):
-            keyboard.add(keys[i])
+    cell_list = worksheet.findall(str(message.from_user.id))
+    amount_of_orders = len(cell_list)
+    if amount_of_orders == 2:
+        await bot.send_message(chat_id=message.from_user.id,
+                               text=f'Уважаемый(ая) {message.from_user.full_name}, две сессии в рамках '
+                                    f'бесплатного консультирования состоялись.\n\n'
+                                    f'Для продолжения работы со специалистом пишите на '
+                                    f'почту <b>chibisova.polina@mail.ru</b>.',
+                               parse_mode="HTML")
     else:
-        for i in range(0, len(keys)):
-            keyboard.add(keys[i])
-    keyboard.add('Вернуться в главное меню')
-    await bot.send_message(chat_id=message.from_user.id,
-                           text=f"Выберите время, в которое вам удобно встретиться",
-                           parse_mode="HTML",
-                           reply_markup=keyboard)
+        list_for_google_sheet.clear()
+        list_for_google_sheet.append(message.text)
+        for key in list(buttons_dict.keys()):
+            if datetime.now() - timedelta(hours=16) > buttons_dict[key]:
+                del buttons_dict[key]
+        keys = list(buttons_dict.keys())
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+        if len(keys) > 5:
+            for i in range(0, 6):
+                keyboard.add(keys[i])
+        else:
+            for i in range(0, len(keys)):
+                keyboard.add(keys[i])
+        keyboard.add('Вернуться в главное меню')
+        await bot.send_message(chat_id=message.from_user.id,
+                               text=f"Выберите время, в которое вам удобно встретиться",
+                               parse_mode="HTML",
+                               reply_markup=keyboard)
 
 
 @dp.message_handler(text='Записаться в лист ожидания')
@@ -303,17 +278,26 @@ async def extra_pscychologist(message: types.Message):
                            f"(каждое слово должно начинаться с заглавной буквы)",
                            parse_mode="HTML")
 
+    await message.delete()
+
 
 # Обработка нажатий на кнопку
 @dp.message_handler(lambda message: message.text in buttons_dict.keys())
 async def button_click(message: types.Message):
     end_date = str(buttons_dict[message.text]).split()[0]
+    end_date_to_confirm = str(buttons_dict[message.text] + timedelta(hours=1))
     scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
     scheduler.add_job(job, trigger='cron', day_of_week='1,3,5',
                       hour=18, minute=30, end_date=end_date,
-                      kwargs={'chat_id': message.from_user.id, 'user_name': message.from_user.full_name,
+                      kwargs={'chat_id': message.from_user.id, 'users_name': message.from_user.full_name,
                               'session_date': message.text})
+    kb = InlineKeyboardMarkup().add(InlineKeyboardButton(text='Завершить сеанс', callback_data='end_my_session'))
+    scheduler1 = AsyncIOScheduler(timezone="Europe/Moscow")
+    scheduler1.add_job(feedback_message, trigger='date', run_date=end_date_to_confirm,
+                       kwargs={'chat_id': message.from_user.id, 'users_name': message.from_user.full_name,
+                               'kb': kb})
     scheduler.start()
+    scheduler1.start()
     del buttons_dict[message.text]
     keys = list(buttons_dict.keys())
     if len(keys) >= 0:
@@ -323,12 +307,15 @@ async def button_click(message: types.Message):
                 keyboard.add(keys[i])
             else:
                 pass
-        keyboard.add('Записаться в главное меню')
+        keyboard.add('Вернуться в главное меню')
+        list_for_google_sheet.append(message.text)
     await bot.send_message(chat_id=message.from_user.id,
                            text=f"Для начала введите свое имя и номер группы в формате\n\n"
                                 f"<b>Колесников Дмитрий Михайлович Э305</b>\n\n"
                                 f"(каждое слово должно начинаться с заглавной буквы)",
                            parse_mode="HTML")
+
+    await message.delete()
 
 
 @dp.message_handler()
@@ -454,78 +441,40 @@ async def take_user_name(m: types.Message) -> user_name:
             del list_for_google_sheet[0]
             list_for_google_sheet.append('None')
             list_for_google_sheet.append(psychology_type)
+        list_for_google_sheet.append('.')
+        list_for_google_sheet.append(int(1))
         worksheet.append_row(list_for_google_sheet)
         await bot.send_message(chat_id=m.from_user.id,
                                text=f'Вы успешно зарегистрировались на прием!\n'
                                     f'Вот ваши данные:')
         await bot.send_message(chat_id=m.from_user.id,
-                               text=f'ФИО: {list_for_google_sheet[1]}\n'
-                                    f'Номер группы: {list_for_google_sheet[2]}\n'
-                                    f'Электронная почта: {list_for_google_sheet[4]}\n'
-                                    f'Проблема: {list_for_google_sheet[5]}\n'
-                                    f'Дата и время приема: {list_for_google_sheet[6]}',
-                               reply_markup=kb_main)
+                               text=f'<b>ФИО</b>: {list_for_google_sheet[1]}\n'
+                                    f'<b>Номер группы</b>: {list_for_google_sheet[2]}\n'
+                                    f'<b>Электронная почта</b>: {list_for_google_sheet[4]}\n'
+                                    f'<b>Проблема</b>: {list_for_google_sheet[5]}\n'
+                                    f'<b>Дата и время приема</b>: {list_for_google_sheet[6]}',
+                               parse_mode="HTML",
+                               reply_markup=psychology_answer_kb)
+
+        await bot.send_message(chat_id=683092826,
+                               text=f'<b>ФИО</b>: {list_for_google_sheet[1]}\n'
+                                    f'<b>Номер группы</b>: {list_for_google_sheet[2]}\n'
+                                    f'<b>Электронная почта</B>: {list_for_google_sheet[4]}\n'
+                                    f'<b>Проблема</b>: {list_for_google_sheet[5]}\n'
+                                    f'<b>Дата и время приема</b>: {list_for_google_sheet[6]}',
+                               parse_mode="HTML")
 
         if list_for_google_sheet[7] == 'Полина Чибисова':
             await bot.send_message(chat_id=739380400,
                                    text=f'Уважаемая Полина, к вам записался новый человек.\n'
                                         f'Вот его данные:')
             await bot.send_message(chat_id=739380400,
-                                   text=f'ФИО: {list_for_google_sheet[1]}\n'
-                                        f'Номер группы: {list_for_google_sheet[2]}\n'
-                                        f'Электронная почта: {list_for_google_sheet[4]}\n'
-                                        f'Проблема: {list_for_google_sheet[5]}\n'
-                                        f'Дата и время приема: {list_for_google_sheet[6]}')
-
-        if list_for_google_sheet[6] == 'Среда 22 ноября 2023, 14:00' or list_for_google_sheet[
-            6] == 'Среда 22 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 22 ноября 2023, 16:00':
-            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
-                              end_date='2023-11-21', kwargs={'chat_id': m.from_user.id})
-            scheduler.start()
-
-        if list_for_google_sheet[6] == 'Четверг 23 ноября 2023, 14:00' or list_for_google_sheet[
-            6] == 'Четверг 23 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Четверг 23 ноября 2023, 16:00':
-            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
-                              end_date='2023-11-23', kwargs={'chat_id': m.from_user.id})
-            scheduler.start()
-
-        if list_for_google_sheet[6] == 'Среда 29 ноября 2023, 14:00' or list_for_google_sheet[
-            6] == 'Среда 29 ноября 2023, 15:00' or list_for_google_sheet[6] == 'Среда 29 ноября 2023, 16:00':
-            scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
-            scheduler.add_job(delay_reminder, trigger='cron', day_of_week='0, 1, 4', hour='18', minute='30',
-                              end_date='2023-11-29', kwargs={'chat_id': m.from_user.id})
-            scheduler.start()
-
-    elif user_name[0] == 'Удали' or user_name[0] == 'удали':
-        cell_list = worksheet.findall(str(m.from_user.id))
-        if cell_list is None:
-            await bot.send_message(chat_id=m.from_user.id,
-                                   text=f'Уважаемый пользователь, вы ранее не записовались на прием к психологу,'
-                                        f'поэтому невозможно удалить вашу запись',
-                                   reply_markup=kb_main)
-        else:
-            for i in cell_list:
-                row_number = i.row
-                column_number = i.col
-                worksheet.update_cell(row_number, column_number + 8, f'Отмена записи произошла в {datetime.now()}')
-            await bot.send_message(chat_id=m.from_user.id,
-                                   text=f'Ваша запись успешно удалена.\n'
-                                        f'Психолог оповещен о данном происшествии',
-                                   reply_markup=kb_main)
-            await bot.send_message(chat_id=739380400,
-                                   text=f'Уважаемая Полина, данный человек <b>отказался</b> от встречи с вами.\n'
-                                        f'Вот его данные:')
-            await bot.send_message(chat_id=739380400,
-                                   text=f'ФИО: {list_for_google_sheet[1]}\n'
-                                        f'Номер группы: {list_for_google_sheet[2]}\n'
-                                        f'Электронная почта: {list_for_google_sheet[4]}\n'
-                                        f'Проблема: {list_for_google_sheet[5]}\n'
-                                        f'Дата и время приема: {list_for_google_sheet[6]}')
-    elif m.text == "Иди нахуй" or m.text == "иди нахуй":
-        await bot.send_message(m.from_user.id,
-                               text='Сам иди нахуй')
+                                   text=f'<b>ФИО<>/b: {list_for_google_sheet[1]}\n'
+                                        f'<b>Номер группы</b>: {list_for_google_sheet[2]}\n'
+                                        f'<b>Электронная почта</b>: {list_for_google_sheet[4]}\n'
+                                        f'<b>Проблема</b>: {list_for_google_sheet[5]}\n'
+                                        f'<b>Дата и время приема</b>: {list_for_google_sheet[6]}',
+                                   parse_mode="HTML")
 
     return user_name
 
@@ -552,11 +501,147 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                               f'Например, <b>«Где Иванов Владимир Владимирович»</b>',
                                          parse_mode='HTML')
     elif callback.data == 'prepod_email':
-        await callback.message.edit_text(text=f'{telegram_user_name}, чтобы узнать почту интересующего вас '
-                                              f'преподавателя, достаточно указать его имя как в паспорте с'
-                                              f'припиской «почта».\n\n'
-                                              f'Например, <b>«Почта Иванов Владимир Владимирович»</b>',
-                                         parse_mode='HTML')
+        btn = [
+            InlineKeyboardButton(text="Фамилии на буквы А-В", callback_data='second_name_A'), ### перввые 21 элемениов
+            InlineKeyboardButton(text="Фамилии на буквы В-И", callback_data='second_name_BV'), ### с 21 по 50
+            InlineKeyboardButton(text="Фамилии на буквы И-К", callback_data='second_name_GD'), ### с 51 по 80
+            InlineKeyboardButton(text="Фамилии на буквы К-М", callback_data='second_name_EI'), ### с 81 по 105
+            InlineKeyboardButton(text="Фамилии на буквы М-П", callback_data='second_name_K'), ### с 106 по 135
+            InlineKeyboardButton(text="Фамилии на буквы П-С", callback_data='second_name_KL'), ### `с 136 по 165
+            InlineKeyboardButton(text='Фамилии на буквы С-Ч', callback_data='second_name_LM'), ### с 166 по 195
+            InlineKeyboardButton(text='Фамилии на буквы Ч-Э', callback_data='second_name_M') ###с 196 по 202
+        ]
+        kb = InlineKeyboardMarkup()
+        for i in range(len(btn)):
+            kb.add(btn[i])
+        await callback.message.edit_text(text=f'Уважаемый(ая) {telegram_user_name}, чтобы узнать '
+                                              f'почту интересующего вас '
+                                              f'преподавателя, достаточно выбрать букву, на '
+                                              f'которую начинается его фамилия.',
+                                         parse_mode='HTML',
+                                         reply_markup=kb)
+
+    elif callback.data == 'second_name_A':
+        counter = 0
+        kb = InlineKeyboardMarkup()
+        for key, val in teachers_dict_1.items():
+            if counter <= 21:
+                btn = InlineKeyboardButton(text=f'{key}', callback_data=f'{val}')
+                kb.add(btn)
+                counter += 1
+
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, для того, чтобы узнать почту '
+                                    f'интересующего вас преподавателя, достаточно нажать на его имя.',
+                               reply_markup=kb)
+
+    elif callback.data == 'second_name_BV':
+        counter = 0
+        kb = InlineKeyboardMarkup()
+        for key, val in teachers_dict_1.items():
+            counter += 1
+            if counter > 21 and counter <= 50:
+                btn = InlineKeyboardButton(text=f'{key}', callback_data=f'{val}')
+                kb.add(btn)
+
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, для того, чтобы узнать почту '
+                                    f'интересующего вас преподавателя, достаточно нажать на его имя.',
+                               reply_markup=kb)
+
+    elif callback.data == 'second_name_GD':
+        counter = 0
+        kb = InlineKeyboardMarkup()
+        for key, val in teachers_dict_1.items():
+            counter += 1
+            if counter > 51 and counter <= 80:
+                btn = InlineKeyboardButton(text=f'{key}', callback_data=f'{val}')
+                kb.add(btn)
+
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, для того, чтобы узнать почту '
+                                    f'интересующего вас преподавателя, достаточно нажать на его имя.',
+                               reply_markup=kb)
+
+    elif callback.data == 'second_name_EI':
+        counter = 0
+        kb = InlineKeyboardMarkup()
+        for key, val in teachers_dict_1.items():
+            counter += 1
+            if counter > 80 and counter <= 105:
+                btn = InlineKeyboardButton(text=f'{key}', callback_data=f'{val}')
+                kb.add(btn)
+
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, для того, чтобы узнать почту '
+                                    f'интересующего вас преподавателя, достаточно нажать на его имя.',
+                               reply_markup=kb)
+
+    elif callback.data == 'second_name_K':
+        counter = 0
+        kb = InlineKeyboardMarkup()
+        for key, val in teachers_dict_1.items():
+            counter += 1
+            if counter > 105 and counter <= 135:
+                btn = InlineKeyboardButton(text=f'{key}', callback_data=f'{val}')
+                kb.add(btn)
+
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, для того, чтобы узнать почту '
+                                    f'интересующего вас преподавателя, достаточно нажать на его имя.',
+                               reply_markup=kb)
+
+    elif callback.data == 'second_name_KL':
+        counter = 0
+        kb = InlineKeyboardMarkup()
+        for key, val in teachers_dict_1.items():
+            counter += 1
+            if counter > 135 and counter <= 165:
+                btn = InlineKeyboardButton(text=f'{key}', callback_data=f'{val}')
+                kb.add(btn)
+
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, для того, чтобы узнать почту '
+                                    f'интересующего вас преподавателя, достаточно нажать на его имя.',
+                               reply_markup=kb)
+
+    elif callback.data == 'second_name_LM':
+        counter = 0
+        kb = InlineKeyboardMarkup()
+        for key, val in teachers_dict_1.items():
+            counter += 1
+            if counter > 165 and counter <= 191:
+                btn = InlineKeyboardButton(text=f'{key}', callback_data=f'{val}')
+                kb.add(btn)
+
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, для того, чтобы узнать почту '
+                                    f'интересующего вас преподавателя, достаточно нажать на его имя.',
+                               reply_markup=kb)
+
+    elif callback.data == 'second_name_M':
+        counter = 0
+        kb = InlineKeyboardMarkup()
+        for key, val in teachers_dict_1.items():
+            counter += 1
+            if counter > 191 and counter <= 202:
+                btn = InlineKeyboardButton(text=f'{key}', callback_data=f'{val}')
+                kb.add(btn)
+
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, для того, чтобы узнать почту '
+                                    f'интересующего вас преподавателя, достаточно нажать на его имя.',
+                               reply_markup=kb)
+
+    elif callback.data in teachers_dict_1.values():
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, вот <b>контактные данные</b>, '
+                                    f'интересующего вас '
+                                    f'преподавателя: <b>{callback.data}</b>.\n\n'
+                                    f'Будьте <b>воспитанными</b> студентами и <b>не пишите</b> преподавателям'
+                                    f' <b>в ночи</b>!',
+                               parse_mode="HTML",
+                               reply_markup=kb_main)
 
     elif callback.data == 'first_pair':
         current_time = '09:00-10:30'
@@ -897,6 +982,144 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                text=f'Вот ваше расписание на следующую неделю, {full_name}')
         await bot.send_photo(chat_id=callback.message.chat.id,
                              photo=photo)
+
+    elif callback.data == 'cancel_order':
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, вы уверены, что хотите отменить '
+                                    f'встречу с психологом?',
+                               parse_mode="HTML",
+                               reply_markup=psychology_order_confirmation_kb)
+
+    elif callback.data == 'free_orders':
+        cell_list = worksheet.findall(str(callback.from_user.id))
+        amount_of_orders = len(cell_list)
+        if amount_of_orders == 1:
+            await bot.send_message(chat_id=callback.from_user.id,
+                                   text=f'Увважвемый(ая) {callback.from_user.full_name}, у вас осталась ровно '
+                                        f'<b>{amount_of_orders}</b> бесплатная встреча с психологом.',
+                                   parse_mode="HTML")
+        else:
+            await bot.send_message(chat_id=callback.from_user.id,
+                                   text=f'Уважаемый(ая) {callback.from_user.full_name}, у вас <b>не осталось</b> '
+                                        f'бесплатных попыток.',
+                                   parse_mode="HTML")
+            await bot.send_message(chat_id=callback.from_user.id,
+                                   text=f'Уважаемый(ая) {callback.from_user.full_name}, две сессии в рамках '
+                                        f'бесплатного консультирования состоялись, '
+                                        f'для продолжения работы со специалистом пишите на '
+                                        f'почту <b>chibisova.polina@mail.ru</b>',
+                                   parse_mode="HTML",
+                                   reply_markup=kb_main)
+
+        await callback.message.delete()
+
+    elif callback.data == 'accidentally_clicked':
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(а) <b>{callback.from_user.full_name}</b>, ваша запись'
+                                    f' к психологу сохранилась',
+                               parse_mode="HTML",
+                               reply_markup=kb_main)
+        await callback.message.delete()
+
+    elif callback.data == 'trully_cancel_order':
+        await callback.message.delete()
+        cell_list = worksheet.findall(str(callback.from_user.id))
+        row_number = cell_list[-1].row
+        column_number = cell_list[-1].col
+        student_name = worksheet.cell(row_number, column_number + 1).value
+        student_group = worksheet.cell(row_number, column_number + 2).value
+        student_email = worksheet.cell(row_number, column_number + 4).value
+        student_problem = worksheet.cell(row_number, column_number + 5).value
+        student_meeting_data = str(worksheet.cell(row_number, column_number + 6).value)
+        if datetime.now() <= buttons_dict_copy[student_meeting_data] - timedelta(hours=24):
+            worksheet.update_cell(row_number, column_number + 8, f'Отмена записи произошла в {datetime.now()} раньше, '
+                                                                 f'чем за 24 часа до встречи. Никаких штрафов нет.')
+            await bot.send_message(chat_id=callback.from_user.id,
+                                   text=f'Уважаемый(ая) <b>{callback.from_user.full_name}</b>, вы отменили '
+                                        f'встречу.\n\n'
+                                        f'Штрафов за отмену у вас <b>нет</b>. \n\n'
+                                        f'Психолог получил уведомление об отмене.',
+                                   parse_mode="HTML",
+                                   reply_markup=kb_main)
+
+            await bot.send_message(chat_id=739380400,
+                                   text=f'Уважаемая Полина, данный человек <b>отказался</b> от встречи с вами.\n'
+                                        f'Штрафов за отмену у человека нет, так как отмена произошла за 24 часа до '
+                                        f'встречи с вами\n'
+                                        f'Вот его данные:')
+            await bot.send_message(chat_id=739380400,
+                                   text=f'<b>ФИО</b>: {student_name}\n'
+                                        f'<b>Номер группы</b>: {student_group}\n'
+                                        f'<b>Электронная почта</b>: {student_email}\n'
+                                        f'<b>Проблема</b>: {student_problem}\n'
+                                        f'<b>Дата и время приема</b>: {student_meeting_data}',
+                                   parse_mode="HTML")
+            await bot.send_message(chat_id=683092826,
+                                   text=f'Уважаемый Дмитрий, данный человек <b>отказался</b> от встречи с вами.\n'
+                                        f'Штрафов за отмену у человека нет, так как отмена произошла за 24 часа до '
+                                        f'встречи с вами\n'
+                                        f'Вот его данные:')
+            await bot.send_message(chat_id=683092826,
+                                   text=f'<b>ФИО</b>: {student_name}\n'
+                                        f'<b>Номер группы</b>: {student_group}\n'
+                                        f'<b>Электронная почта</b>: {student_email}\n'
+                                        f'<b>Проблема</b>: {student_problem}\n'
+                                        f'<b>Дата и время приема</b>: {student_meeting_data}',
+                                   parse_mode="HTML")
+
+            for i in range(0, 10):
+                worksheet.update_cell(row_number, column_number + i, '')
+
+        else:
+            worksheet.update_cell(row_number, column_number + 8, f'Отмена записи произошла в {datetime.now()} позже, '
+                                                                 f'чем за 24 часа до встречи. Есть штраф')
+
+            await bot.send_message(chat_id=callback.from_user.id,
+                                   text=f'Уважаемый(ая) <b>{callback.from_user.full_name}</b>, вы отменили '
+                                        f'встречу.\n\n'
+                                        f'У вас <b>есть</b> штраф за отмену встречи, потому что отмену надо '
+                                        f'производить не позднее, чем за 24 часа! \n\n'
+                                        f'Психолог получил уведомление об отмене.',
+                                   parse_mode="HTML",
+                                   reply_markup=kb_main)
+
+            await bot.send_message(chat_id=739380400,
+                                   text=f'Уважаемая Полина, данный человек <b>отказался</b> от встречи с вами.\n'
+                                        f'У человека есть штраф за отмену, так как отмена произошла позднее чем за 24 '
+                                        f'часа до '
+                                        f'встречи с вами\n'
+                                        f'Вот его данные:')
+            await bot.send_message(chat_id=739380400,
+                                   text=f'<b>ФИО</b>: {student_name}\n'
+                                        f'<b>Номер группы</b>: {student_group}\n'
+                                        f'<b>Электронная почта</b>: {student_email}\n'
+                                        f'<b>Проблема</b>: {student_problem}\n'
+                                        f'<b>Дата и время приема</b>: {student_meeting_data}',
+                                   parse_mode="HTML")
+
+            await bot.send_message(chat_id=683092826,
+                                   text=f'Уважаемый Дмитрий, данный человек <b>отказался</b> от встречи с вами.\n'
+                                        f'У человека есть штраф за отмену, так как отмена произошла позднее чем за 24 '
+                                        f'часа до '
+                                        f'встречи с вами\n'
+                                        f'Вот его данные:')
+            await bot.send_message(chat_id=683092826,
+                                   text=f'<b>ФИО</b>: {student_name}\n'
+                                        f'<b>Номер группы</b>: {student_group}\n'
+                                        f'<b>Электронная почта</b>: {student_email}\n'
+                                        f'<b>Проблема</b>: {student_problem}\n'
+                                        f'<b>Дата и время приема</b>: {student_meeting_data}',
+                                   parse_mode="HTML")
+
+    elif callback.data == 'end_my_session':
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, вы <b>завершили '
+                                    f'встречу</b> с психологом.\n\n'
+                                    f'Мы надеемся вам все понравилось и <b>желаем хорошего дня!</b>',
+                               parse_mode="HTML",
+                               reply_markup=kb_main)
+
+        await callback.message.delete()
 
 
 if __name__ == '__main__':

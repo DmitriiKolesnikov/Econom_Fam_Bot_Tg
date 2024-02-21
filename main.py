@@ -16,13 +16,11 @@ from datetime import date
 from kabs_data_and_logic import list_of_kabs_first_flour, list_of_kabs_second_flour, \
     list_of_kabs_third_flour, list_of_kabs_fourth_flour, list_of_kabs_fith_flour
 
-TOKEN_API = '6431263054:AAEhJ6tGq0YTFBHFQf_8sIpMMiEJycYU_Dg'
+TOKEN_API = '6214205049:AAG2hKi_LViqSZuxbB37VMoyySSK3w7i2Fg'
 
 
 bot = Bot(TOKEN_API)
 dp = Dispatcher(bot)
-
-#Ебануть проверку на наличие персоны на приеме
 
 
 user_name = ''
@@ -420,7 +418,7 @@ async def take_user_name(m: types.Message) -> user_name:
         list_for_google_sheet.append(client_mail)
         await bot.send_message(chat_id=m.from_user.id,
                                text=f"А теперь расскажите о своей проблеме.\n\n"
-                                    f"<b>Эту информацию увидит только психолог </b>.\n\n"
+                                    f"<b>Эту информацию увидит только психолог</b>.\n\n"
                                     f"Описание проблемы должно содержать от 6 до 50 слов.",
                                parse_mode="HTML")
 
@@ -459,7 +457,7 @@ async def take_user_name(m: types.Message) -> user_name:
         await bot.send_message(chat_id=683092826,
                                text=f'<b>ФИО</b>: {list_for_google_sheet[1]}\n'
                                     f'<b>Номер группы</b>: {list_for_google_sheet[2]}\n'
-                                    f'<b>Электронная почта</B>: {list_for_google_sheet[4]}\n'
+                                    f'<b>Электронная почта</b>: {list_for_google_sheet[4]}\n'
                                     f'<b>Проблема</b>: {list_for_google_sheet[5]}\n'
                                     f'<b>Дата и время приема</b>: {list_for_google_sheet[6]}',
                                parse_mode="HTML")
@@ -469,7 +467,7 @@ async def take_user_name(m: types.Message) -> user_name:
                                    text=f'Уважаемая Полина, к вам записался новый человек.\n'
                                         f'Вот его данные:')
             await bot.send_message(chat_id=739380400,
-                                   text=f'<b>ФИО<>/b: {list_for_google_sheet[1]}\n'
+                                   text=f'<b>ФИО</b>: {list_for_google_sheet[1]}\n'
                                         f'<b>Номер группы</b>: {list_for_google_sheet[2]}\n'
                                         f'<b>Электронная почта</b>: {list_for_google_sheet[4]}\n'
                                         f'<b>Проблема</b>: {list_for_google_sheet[5]}\n'

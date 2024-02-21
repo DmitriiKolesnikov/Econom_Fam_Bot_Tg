@@ -1044,7 +1044,8 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                    text=f'Уважаемая Полина, данный человек <b>отказался</b> от встречи с вами.\n'
                                         f'Штрафов за отмену у человека нет, так как отмена произошла за 24 часа до '
                                         f'встречи с вами\n'
-                                        f'Вот его данные:')
+                                        f'Вот его данные:',
+                                   parse_mode="HTML")
             await bot.send_message(chat_id=739380400,
                                    text=f'<b>ФИО</b>: {student_name}\n'
                                         f'<b>Номер группы</b>: {student_group}\n'
@@ -1056,7 +1057,8 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                    text=f'Уважаемый Дмитрий, данный человек <b>отказался</b> от встречи с вами.\n'
                                         f'Штрафов за отмену у человека нет, так как отмена произошла за 24 часа до '
                                         f'встречи с вами\n'
-                                        f'Вот его данные:')
+                                        f'Вот его данные:',
+                                   parse_mode="HTML")
             await bot.send_message(chat_id=683092826,
                                    text=f'<b>ФИО</b>: {student_name}\n'
                                         f'<b>Номер группы</b>: {student_group}\n'
@@ -1086,7 +1088,8 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                         f'У человека есть штраф за отмену, так как отмена произошла позднее чем за 24 '
                                         f'часа до '
                                         f'встречи с вами\n'
-                                        f'Вот его данные:')
+                                        f'Вот его данные:',
+                                   parse_mode="HTML")
             await bot.send_message(chat_id=739380400,
                                    text=f'<b>ФИО</b>: {student_name}\n'
                                         f'<b>Номер группы</b>: {student_group}\n'
@@ -1100,7 +1103,8 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                         f'У человека есть штраф за отмену, так как отмена произошла позднее чем за 24 '
                                         f'часа до '
                                         f'встречи с вами\n'
-                                        f'Вот его данные:')
+                                        f'Вот его данные:',
+                                   parse_mode="HTML")
             await bot.send_message(chat_id=683092826,
                                    text=f'<b>ФИО</b>: {student_name}\n'
                                         f'<b>Номер группы</b>: {student_group}\n'

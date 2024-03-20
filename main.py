@@ -7,7 +7,7 @@ from Free_room_kb import free_room_kb
 from Meropriatia_kb import meropriatia_kb
 from Json_data import sched_w_st, data_all_teachers_and_mails
 from Google_sheet import *
-from tests import teachers_dict_1
+from tests import teachers_dict_1, dict_of_teachers, final_data_of_teachers_to_find
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from datetime import datetime, timedelta
 from sercher_cacsa import get_schedule
@@ -16,7 +16,7 @@ from datetime import date
 from kabs_data_and_logic import list_of_kabs_first_flour, list_of_kabs_second_flour, \
     list_of_kabs_third_flour, list_of_kabs_fourth_flour, list_of_kabs_fith_flour
 
-TOKEN_API = '6431263054:AAEhJ6tGq0YTFBHFQf_8sIpMMiEJycYU_Dg'
+TOKEN_API = '6214205049:AAG2hKi_LViqSZuxbB37VMoyySSK3w7i2Fg'
 
 
 bot = Bot(TOKEN_API)
@@ -63,6 +63,7 @@ buttons_dict = dict(zip(buttons_keys, buttons_values))
 buttons_dict_copy = buttons_dict.copy()
 psychologist = ['Полина Чибисова', 'Записаться в лист ожидания']
 list_for_google_sheet = []
+list_for_das = []
 
 
 async def on_startup(_):
@@ -78,11 +79,12 @@ async def feedback_message(chat_id, users_name, kb):
                            reply_markup=kb)
 
 
-async def job(chat_id, users_name, session_date):
+async def job(chat_id, users_name, session_date, kb):
     await bot.send_message(chat_id=chat_id,
                            text=f'Уважаемый <b>{users_name}</b>, \nнапоминаю вам о записи к психологу.\n\n'
                                 f'Дата записи <b>{session_date}</b>, \nждем вас в <b>447 кабинете</b> 😊😊😊.',
-                           parse_mode="HTML")
+                           parse_mode="HTML",
+                           reply_markup=kb)
 
 
 @dp.message_handler(commands=['start'])
@@ -197,6 +199,17 @@ async def meropriatia_command(message: types.Message) -> None:
     await message.delete()
 
 
+@dp.message_handler(text='🏠Заявка в ДАС')
+async def das_command(message: types.Message):
+    kb = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+    kb.add(*psychologist)
+    kb.add('Вернуться в главное меню')
+    await bot.send_message(chat_id=message.from_user.id,
+                           text=f'Данная кнопка сделана для записи в дас',
+                           parse_mode="HTML",
+                           reply_markup=kb)
+
+
 # метод для обработки команды гугл шит
 @dp.message_handler(text='⌛Психологическая помощь')
 async def google_sheet_command(message: types.Message):
@@ -288,7 +301,7 @@ async def button_click(message: types.Message):
     scheduler.add_job(job, trigger='cron', day_of_week='1,3,5',
                       hour=18, minute=30, end_date=end_date,
                       kwargs={'chat_id': message.from_user.id, 'users_name': message.from_user.full_name,
-                              'session_date': message.text})
+                              'session_date': message.text, 'kb': psychology_answer_kb})
     kb = InlineKeyboardMarkup().add(InlineKeyboardButton(text='Завершить сеанс', callback_data='end_my_session'))
     scheduler1 = AsyncIOScheduler(timezone="Europe/Moscow")
     scheduler1.add_job(feedback_message, trigger='date', run_date=end_date_to_confirm,
@@ -493,11 +506,133 @@ async def incorrect_name_func(callback: types.CallbackQuery) -> None:
                                          reply_markup=pic_keyboard)
 
     elif callback.data == 'where_is_he':
-        await callback.message.edit_text(text=f'{telegram_user_name}, чтобы узнать, где находится интересующий вас '
-                                              f'преподаватель, достаточно указать его имя как в паспорте с '
-                                              f" припиской «где»'.\n\n"
-                                              f'Например, <b>«Где Иванов Владимир Владимирович»</b>',
-                                         parse_mode='HTML')
+        list_of_teachers_to_find = []
+        for item in final_data_of_teachers_to_find:
+            try:
+                if item['teachers'] not in list_of_teachers_to_find:
+                    list_of_teachers_to_find.append(item['teachers'])
+                else:
+                    pass
+            except IndentationError:
+                print(f'Ошибка в проведении итерации списка')
+
+        counter_1 = 0
+        counter_2 = 0
+        kb = InlineKeyboardMarkup()
+        lst = []
+        for i in sorted(list_of_teachers_to_find):
+            try:
+                counter_1 += 1
+                if counter_1 < 29:
+                    lst.append(i)
+                elif counter_1 == 29:
+                    counter_2 += 1
+                    if lst[0][0] != lst[-1][0]:
+                        btn = InlineKeyboardButton(text=f'Фамилии на буквы {lst[0][0]}-{lst[-1][0]}',
+                                                   callback_data=f'teachers_second_name_to_find_{counter_2}')
+                        kb.add(btn)
+                        lst = []
+                        counter_1 = 0
+                    elif lst[0][0] == lst[-1][0]:
+                        btn = InlineKeyboardButton(text=f'Фамилии на букву {lst[0][0]}',
+                                                   callback_data=f'teachers_second_name_to_find_{counter_2}')
+                        kb.add(btn)
+                        lst = []
+                        counter_1 = 0
+            except StopIteration:
+                print(f'Ошибка во время итерации')
+
+        await callback.message.edit_text(text=f'Уважаемый(ая) {telegram_user_name}, чтобы узнать, где находится '
+                                              f'интересующий вас '
+                                              f'преподаватель, достаточно выбрать букву, на '
+                                              f'которую начинается его фамилия.',
+                                         parse_mode='HTML',
+                                         reply_markup=kb)
+
+    elif 'teachers_second_name_to_find_' in callback.data:
+        kb = InlineKeyboardMarkup()
+        list_of_teachers_to_find = []
+        for item in final_data_of_teachers_to_find:
+            try:
+                if item['teachers'] not in list_of_teachers_to_find:
+                    list_of_teachers_to_find.append(item['teachers'])
+                else:
+                    pass
+            except StopIteration:
+                print(f'Ошибка в проведении итерации списка')
+
+        list_of_teachers_to_find = sorted(list_of_teachers_to_find)
+
+        try:
+            if callback.data[-1] == str(1):
+                for name in list_of_teachers_to_find[:29]:
+                    btn = InlineKeyboardButton(text=f'{name}', callback_data=f'{dict_of_teachers[name]}')
+                    kb.add(btn)
+            elif callback.data[-1] != 1 and len(callback.data) == 30:
+                i = int(callback.data[-1])
+                for name in list_of_teachers_to_find[29 * (i - 1):29 * i]:
+                    btn = InlineKeyboardButton(text=f'{name}', callback_data=f'{dict_of_teachers[name]}')
+                    kb.add(btn)
+            else:
+                i = int(callback.data[29:31])
+                for name in list_of_teachers_to_find[29 * (i - 1):29 * i]:
+                    btn = InlineKeyboardButton(text=f'{name}', callback_data=f'{dict_of_teachers[name]}')
+                    kb.add(btn)
+        except StopIteration:
+            print(f'Ошибка во время итерации')
+
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.full_name}, теперь выберете имя конкретного '
+                                    f'преподавателя, который вас интересует.',
+                               parse_mode="HTML",
+                               reply_markup=kb)
+
+    elif callback.data in dict_of_teachers.values():
+        reversed_dict = {}
+        for key, val in dict_of_teachers.items():
+            reversed_dict[val] = key
+        await bot.send_message(chat_id=callback.from_user.id,
+                               text=f'Уважаемый(ая) {callback.from_user.first_name}, вот, где сегодня будет находиться '
+                                    f'<b>{reversed_dict[callback.data]}</b>\n\n'
+                                    f'<b>Если не пришло сообщение с местоположением, то преподавателя сегодня нет на '
+                                    f'факультете</b>.',
+                               parse_mode='HTML')
+
+        def convert_to_datetime(date_string):  ### Функция для преобразования даты в нормальный формат
+            try:
+                datetime_obj = datetime.strptime(date_string, "%Y-%m-%dT%H:%M:%S")
+                datetime_obj = datetime_obj.strftime("%Y-%m-%d")
+                return datetime_obj
+            except ValueError:
+                print("Ошибка при преобразовании строки в формате даты и времени")
+
+        teachers_name = reversed_dict[callback.data]
+        print(teachers_name)
+        current_date = datetime.now().strftime("%Y-%m-%d")
+        counter = 0
+        try:
+            while counter < len(final_data_of_teachers_to_find):
+                if teachers_name == final_data_of_teachers_to_find[counter]['teachers']:
+                    if current_date == convert_to_datetime(final_data_of_teachers_to_find[counter]['date']):
+                        if final_data_of_teachers_to_find[counter]['place'] is not None \
+                                and final_data_of_teachers_to_find[counter]['time'] is not None:
+                            await bot.send_message(chat_id=callback.from_user.id,
+                                                   text=f"<b>{final_data_of_teachers_to_find[counter]['place']}"
+                                                        f"</b>\n<b>{final_data_of_teachers_to_find[counter]['time']}"
+                                                        f"</b>\n"
+                                                        f"",
+                                                   parse_mode="HTML")
+                        else:
+                            await bot.send_message(chat_id=callback.from_user.id,
+                                                   text=f'Уважаемый(ая) {callback.from_user.full_name}, к сожалению, '
+                                                        f'{reversed_dict[callback.data]} не присутствует на факультете.')
+                            print(f"{final_data_of_teachers_to_find[counter]['place']}, "
+                                  f"{final_data_of_teachers_to_find[counter]['time']}")
+                counter += 1
+
+        except StopIteration:
+            print(f'Ошибка во время итерации')
+
     elif callback.data == 'prepod_email':
         btn = [
             InlineKeyboardButton(text="Фамилии на буквы А-В", callback_data='second_name_A'), ### перввые 21 элемениов

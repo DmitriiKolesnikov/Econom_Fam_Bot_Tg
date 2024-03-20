@@ -6,9 +6,10 @@ Prepodi = KeyboardButton('👩‍🏫Преподаватели')
 Meropriatia = KeyboardButton('💃Мероприятия')
 Psiholog = KeyboardButton('⌛Психологическая помощь')
 Svobodnii_kabi = KeyboardButton('🔎Свободные кабинеты')
+Das = KeyboardButton('🏠Заявка в ДАС')
 
 kb_main.add(Raspisanie).insert(Svobodnii_kabi).add(Prepodi).insert(Meropriatia)
-kb_main.add(Psiholog)
+kb_main.add(Psiholog).insert(Das)
 
 pic_btn = [
     InlineKeyboardButton(text='Эта', callback_data='this'),

@@ -71,8 +71,8 @@ async def on_startup(_):
 
 
 async def feedback_message(chat_id, users_name, kb):
-    await bot.send_message(chat_id=chat_id,
-                           text=f'Уважаемый(ая) {users_name}, вы завершили занятие с психологом. Пожалуйста, '
+    await bot.send_message(chat_id=739380400,
+                           text=f'Уважаемая Полина, {users_name} сегодня должен был придти на занятие . Пожалуйста, '
                                 f'нажмите на кнопку «Завершить сеанс».\n\n'
                                 f'<b>Только в данном</b> случае ваша запись <b>завершится официально</b>!',
                            parse_mode="HTML",
@@ -251,7 +251,7 @@ async def google_sheet_command(message: types.Message):
 async def main_psychologist(message: types.Message):
     cell_list = worksheet.findall(str(message.from_user.id))
     amount_of_orders = len(cell_list)
-    if amount_of_orders == 2:
+    if amount_of_orders == 3:
         await bot.send_message(chat_id=message.from_user.id,
                                text=f'Уважаемый(ая) {message.from_user.full_name}, две сессии в рамках '
                                     f'бесплатного консультирования состоялись.\n\n'

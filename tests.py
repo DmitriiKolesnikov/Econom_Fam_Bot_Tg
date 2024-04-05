@@ -1,5 +1,5 @@
 from Json_data import data_all_teachers_and_mails
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import requests
 import json
 from datetime import datetime, timedelta
@@ -72,16 +72,6 @@ def check_date_name(date: datetime):
     except ValueError:
         print(f'Ошибка со сравнением дат в коде')
 
-
-
-
-
-# for i in final_data:
-#     if 'Иванов Владимир Владимирович' in i['teachers']:
-#         print(f"{i['date']}\n"
-#               f"{i['time']}\n"
-#               f"{i['time']}\n"
-#               f"{i['subject']}")
 
 
 dict_of_teachers = {}

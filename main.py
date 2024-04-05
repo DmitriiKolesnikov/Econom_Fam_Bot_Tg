@@ -82,7 +82,7 @@ async def feedback_message(chat_id, users_name, kb):
 async def job(chat_id, users_name, session_date, kb):
     await bot.send_message(chat_id=chat_id,
                            text=f'Уважаемый <b>{users_name}</b>, \nнапоминаю вам о записи к психологу.\n\n'
-                                f'Дата записи <b>{session_date}</b>, \nждем вас в <b>447 кабинете</b> 😊😊😊.',
+                                f'Дата записи <b>{session_date}</b>, \nждем вас в <b>321 кабинете</b> 😊😊😊.',
                            parse_mode="HTML",
                            reply_markup=kb)
 
@@ -219,7 +219,7 @@ async def google_sheet_command(message: types.Message):
             del buttons_keys[position_number]
             del buttons_values[position_number]
     await bot.send_photo(chat_id=message.from_user.id,
-                         caption=f"👩🏼 Прием осуществляется по средам с 14.00 до 17.00 (ауд 447)\n"
+                         caption=f"👩🏼 Прием осуществляется по средам с 14.00 до 17.00 (ауд 321)\n"
                                  f"На беседу с каждым человеком выделено 50 минут.\n\n"
                                  f"<b>ВАЖНО</b>: пока у нас только один психолог, Чибисова Полина. "
                                  f"Если Вы знакомы с ней лично, она не сможет к сожалению с Вами работать. "
@@ -296,7 +296,7 @@ async def extra_pscychologist(message: types.Message):
 @dp.message_handler(lambda message: message.text in buttons_dict.keys())
 async def button_click(message: types.Message):
     end_date = str(buttons_dict[message.text]).split()[0]
-    end_date_to_confirm = str(buttons_dict[message.text] + timedelta(hours=1))
+    end_date_to_confirm = str(buttons_dict[message.text] + timedelta(hours=16))
     scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
     scheduler.add_job(job, trigger='cron', day_of_week='1,3,5',
                       hour=18, minute=30, end_date=end_date,

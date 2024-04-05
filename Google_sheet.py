@@ -1,6 +1,6 @@
 import gspread
 
-gc = gspread.service_account(filename='google_sheet_one.json')
+gc = gspread.service_account(filename='google_sheet_1.json')
 
 sh = gc.open("Appointment")
 
@@ -18,7 +18,7 @@ worksheet.update_cell(1, 9, 'Отмена записи')
 worksheet.update_cell(1, 10, 'Количество бесплатных посещений из 2')
 worksheet.update_cell(1, 11, 'Столбик для рукописных пометок')
 
-gc2 = gspread.service_account(filename='google_sheet_two.json')
+gc2 = gspread.service_account(filename='google_sheet_2.json')
 sh2 = gc2.open("DASMSU")
 das_worksheet = sh2.sheet1
 das_worksheet.update_cell(1, 1, 'id стдуента')

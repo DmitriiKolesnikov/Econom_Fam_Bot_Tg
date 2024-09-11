@@ -53,7 +53,7 @@ buttons_values = [
     datetime.strptime('2024-10-16', '%Y-%m-%d'), datetime.strptime('2024-10-23', '%Y-%m-%d'),
     datetime.strptime('2024-10-23', '%Y-%m-%d'), datetime.strptime('2024-10-23', '%Y-%m-%d'),
     datetime.strptime('2024-10-30', '%Y-%m-%d'), datetime.strptime('2024-10-30', '%Y-%m-%d'),
-    datetime.strptime('2024-10-30', '%Y-%m-%d')
+    datetime.strptime('2024-10-30', '%Y-%m-%d'),
 ]
 buttons_dict = dict(zip(buttons_keys, buttons_values))
 buttons_dict_copy = buttons_dict.copy()

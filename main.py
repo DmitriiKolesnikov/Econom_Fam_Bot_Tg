@@ -256,6 +256,25 @@ async def main_psychologist(message: types.Message):
                                     f'Для продолжения работы со специалистом пишите на '
                                     f'почту <b>chibisova.polina@mail.ru</b>.',
                                parse_mode="HTML")
+        list_for_google_sheet.clear()
+        list_for_google_sheet.append(message.text)
+        for key in list(buttons_dict.keys()):
+            if datetime.now() - timedelta(hours=16) > buttons_dict[key]:
+                del buttons_dict[key]
+        keys = list(buttons_dict.keys())
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+        if len(keys) > 5:
+            for i in range(0, 6):
+                keyboard.add(keys[i])
+        else:
+            for i in range(0, len(keys)):
+                keyboard.add(keys[i])
+        keyboard.add('Вернуться в главное меню')
+        await bot.send_message(chat_id=message.from_user.id,
+                               text=f"Выберите время, в которое вам удобно встретиться",
+                               parse_mode="HTML",
+                               reply_markup=keyboard)
+
     else:
         list_for_google_sheet.clear()
         list_for_google_sheet.append(message.text)

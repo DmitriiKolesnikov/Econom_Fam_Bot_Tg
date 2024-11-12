@@ -46,6 +46,15 @@ buttons_keys = [
     'Среда 20 ноября 2024, 13:00',
     'Среда 27 ноября 2024, 13:00', 'Среда 27 ноября 2024, 14:00',
     'Среда 27 ноября 2024, 13:00',
+    'Среда 4 декабря 2024, 13:00', 'Среда 4 декабря 2024, 14:00',
+    'Среда 4 декабря 2024, 13:00',
+    'Среда 11 декабря 2024, 13:00', 'Среда 11 декабря 2024, 14:00',
+    'Среда 11 декабря 2024, 13:00',
+    'Среда 18 декабря 2024, 13:00', 'Среда 18 декабря 2024, 14:00',
+    'Среда 18 декабря 2024, 13:00',
+    'Среда 25 декабря 2024, 13:00', 'Среда 25 декабря 2024, 14:00',
+    'Среда 25 декабря 2024, 13:00',
+
 
 ]
 buttons_values = [
@@ -60,6 +69,13 @@ buttons_values = [
     datetime.strptime('2024-10-23', '%Y-%m-%d'), datetime.strptime('2024-10-23', '%Y-%m-%d'),
     datetime.strptime('2024-10-30', '%Y-%m-%d'), datetime.strptime('2024-10-30', '%Y-%m-%d'),
     datetime.strptime('2024-10-30', '%Y-%m-%d'),
+    datetime.strptime('2024-11-04', '%Y-%m-%d'), datetime.strptime('2024-11-04', '%Y-%m-%d'),
+    datetime.strptime('2024-11-04', '%Y-%m-%d'), datetime.strptime('2024-11-11', '%Y-%m-%d'),
+    datetime.strptime('2024-11-11', '%Y-%m-%d'), datetime.strptime('2024-11-11', '%Y-%m-%d'),
+    datetime.strptime('2024-11-18', '%Y-%m-%d'), datetime.strptime('2024-11-18', '%Y-%m-%d'),
+    datetime.strptime('2024-11-18', '%Y-%m-%d'), datetime.strptime('2024-11-25', '%Y-%m-%d'), 
+    datetime.strptime('2024-11-25', '%Y-%m-%d'), datetime.strptime('2024-11-25', '%Y-%m-%d'),
+    
 ]
 buttons_dict = dict(zip(buttons_keys, buttons_values))
 buttons_dict_copy = buttons_dict.copy()

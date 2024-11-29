@@ -165,5 +165,3 @@ async def handle_message(message: types.Message):
         logging.error(f"Ошибка при обработке сообщения от пользователя {user_id}: {e}")
         await message.reply("Произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте еще раз.", reply_markup=keyboard)
 
-if __name__ == '__main__':
-    executor.start_polling(dp2, skip_updates=True)

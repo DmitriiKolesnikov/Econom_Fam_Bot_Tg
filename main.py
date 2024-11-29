@@ -1,4 +1,5 @@
 import pandas as pd
+import asyncio
 from aiogram import Bot, executor, Dispatcher, types
 from Main_kb import kb_main, pic_keyboard, psychology_answer_kb, psychology_order_confirmation_kb
 from Take_user_name_inline_kb import take_user_name_kb
@@ -1411,10 +1412,17 @@ async def handle_message(message: types.Message):
         await message.reply("Произошла ошибка при обработке вашего запроса. Пожалуйста, попробуйте еще раз.", reply_markup=keyboard)
 
 
+
+async def start_bot_1():
+    await dp1.start_polling()
+
+async def start_bot_2():
+    await dp2.start_polling()
+
+async def main():
+    await asyncio.gather(start_bot_1(), start_bot_2())
+
 if __name__ == '__main__':
-    executor.start_polling(dp,
-                           on_startup=on_startup,
-                           skip_updates=True)
-    executor.start_polling(dp2, skip_updates=True)
+    asyncio.run(main())
 
 

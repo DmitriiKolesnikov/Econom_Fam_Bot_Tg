@@ -1278,7 +1278,7 @@ dp2 = Dispatcher(bot2)
 model = GigaChat(
     credentials="NTE2ODNlYWEtMGM3OS00MzEwLTgyYWItODU0ZGNmMWYwZjYwOjViMzUwMTVkLWU5ZmUtNGE1My05ZjJmLTQwOTI4NDc3ODgxMA==",
     scope="GIGACHAT_API_CORP",
-    model="GigaChat",
+    model="GigaChatPro",
     verify_ssl_certs=False,
 )
 

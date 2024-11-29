@@ -1414,7 +1414,7 @@ async def handle_message(message: types.Message):
 
 
 async def start_bot_1():
-    await dp1.start_polling()
+    await dp.start_polling()
 
 async def start_bot_2():
     await dp2.start_polling()

@@ -3,7 +3,7 @@ from aiogram import Bot, executor, Dispatcher, types
 from Main_kb import kb_main, pic_keyboard, psychology_answer_kb, psychology_order_confirmation_kb
 from Take_user_name_inline_kb import take_user_name_kb
 from Prepodi_inline_kb import prepodi_kb
-from Free_room_kb import free_room_kb
+from Free_room_kb import *
 from Meropriatia_kb import meropriatia_kb
 from Json_data import sched_w_st, data_all_teachers_and_mails
 from Google_sheet import *

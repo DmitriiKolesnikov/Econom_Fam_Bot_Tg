@@ -294,7 +294,7 @@ async def main_psychologist(message: types.Message):
         list_for_google_sheet.clear()
         list_for_google_sheet.append(message.text)
         for key in list(buttons_dict.keys()):
-            if datetime.now() - timedelta(hours=30) > buttons_dict[key]:
+            if datetime.now() + timedelta(days-1) > buttons_dict[key]:
                 del buttons_dict[key]
         keys = list(buttons_dict.keys())
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
@@ -314,7 +314,7 @@ async def main_psychologist(message: types.Message):
         list_for_google_sheet.clear()
         list_for_google_sheet.append(message.text)
         for key in list(buttons_dict.keys()):
-            if datetime.now() - timedelta(hours=30) > buttons_dict[key]:
+            if datetime.now() + timedelta(days=1) > buttons_dict[key]:
                 del buttons_dict[key]
         keys = list(buttons_dict.keys())
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
@@ -348,7 +348,7 @@ async def extra_pscychologist(message: types.Message):
 @dp.message_handler(lambda message: message.text in buttons_dict.keys())
 async def button_click(message: types.Message):
     end_date = str(buttons_dict[message.text]).split()[0]
-    end_date_to_confirm = str(buttons_dict[message.text] + timedelta(hours=16))
+    end_date_to_confirm = str(buttons_dict[message.text] + timedelta(days=1))
     scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
     scheduler.add_job(job, trigger='cron', day_of_week='1,3,5',
                       hour=18, minute=30, end_date=end_date,

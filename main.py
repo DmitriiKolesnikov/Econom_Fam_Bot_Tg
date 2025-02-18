@@ -294,7 +294,7 @@ async def main_psychologist(message: types.Message):
         list_for_google_sheet.clear()
         list_for_google_sheet.append(message.text)
         for key in list(buttons_dict.keys()):
-            if datetime.now() - timedelta(hours=16) > buttons_dict[key]:
+            if datetime.now() - timedelta(hours=34) > buttons_dict[key]:
                 del buttons_dict[key]
         keys = list(buttons_dict.keys())
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
@@ -314,7 +314,7 @@ async def main_psychologist(message: types.Message):
         list_for_google_sheet.clear()
         list_for_google_sheet.append(message.text)
         for key in list(buttons_dict.keys()):
-            if datetime.now() - timedelta(hours=16) > buttons_dict[key]:
+            if datetime.now() - timedelta(hours=34) > buttons_dict[key]:
                 del buttons_dict[key]
         keys = list(buttons_dict.keys())
         keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)

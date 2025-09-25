@@ -1,13 +1,17 @@
-aiogram
+aiogram==2.25.1
 aiohttp
 aiosignal
+apscheduler
 async-timeout
+gspread
 attrs
 Babel
 certifi
 charset-normalizer
+langchain_core
 exceptiongroup
 frozenlist
+langchain_gigachat
 h11
 idna
 magic-filter
@@ -25,6 +29,7 @@ sortedcontainers
 trio
 trio-websocket
 urllib3
+pandas
 webdriver-manager
 wsproto
 yarl

@@ -39,4 +39,4 @@ das_worksheet.update_cell(1, 15, 'Есть ли основания для вкл
 das_worksheet.update_cell(1, 16, 'Для граждан России: регион( область, край или республика) и населенный пункт')
 das_worksheet.update_cell(1, 17, 'Дата посещения Отдела расселения')
 das_worksheet.update_cell(1, 18, 'Время посещения Отдела расселения')
-das_worksheet.update_cell(1, 19., 'Отказ')
+das_worksheet.update_cell(1, 19, 'Отказ')
